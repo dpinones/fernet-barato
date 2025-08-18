@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://fernetbarato.com/sitemap.xml
+
+# Block crawling of authentication pages and API routes
+Disallow: /api/
+Disallow: /auth/
+
+# Allow specific important pages
+Allow: /
+Allow: /stores
+Allow: /prices
+
+# Crawl delay for good behavior
+Crawl-delay: 1

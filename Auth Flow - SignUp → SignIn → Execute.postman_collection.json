@@ -1,0 +1,178 @@
+{
+	"info": {
+		"_postman_id": "51f43d82-2b27-4124-8816-87e72c231911",
+		"name": "Auth Flow - SignUp → SignIn → Execute",
+		"description": "Postman collection to sign up, sign in, and execute using returned credentials",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36255203",
+		"_collection_link": "https://cavos2.postman.co/workspace/Cavos~3e9fd1a5-af1b-4558-8240-449c4bfa2823/collection/36255203-51f43d82-2b27-4124-8816-87e72c231911?action=share&source=collection_link&creator=36255203"
+	},
+	"item": [
+		{
+			"name": "1 - Sign Up",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Generate random email & password once per run",
+							"if (!pm.collectionVariables.get('email')) {",
+							"    const randomStr = Math.random().toString(36).substring(2,10);",
+							"    pm.collectionVariables.set('email', `user_${randomStr}@example.com`);",
+							"}",
+							"if (!pm.collectionVariables.get('password')) {",
+							"    const randomPass = Math.random().toString(36).substring(2,12) + 'A!';",
+							"    pm.collectionVariables.set('password', randomPass);",
+							"}",
+							"pm.collectionVariables.set('network', 'sepolia');"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Store email and password for Sign In",
+							"pm.test('Sign Up successful', function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\",\n    \"network\": \"sepolia\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/auth/signUp",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"signUp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2 - Sign In",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Parse Sign In response and save wallet & token",
+							"pm.test('Sign In successful', function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"let res = pm.response.json();",
+							"pm.collectionVariables.set('walletAddress', res.walletAddress);",
+							"pm.collectionVariables.set('accessToken', res.accessToken);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"a9fwom4p@yahoo.com\",\n    \"password\": \"j92ENZMmPdTIecb\",\n    \"network\": \"sepolia\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/auth/signIn",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"signIn"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3 - Execute",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"walletAddress\": \"{{walletAddress}}\",\n    \"network\": \"{{network}}\",\n    \"accessToken\": \"{{accessToken}}\",\n    \"calls\": [\n        {\n            \"contractAddress\": \"0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d\",\n            \"entrypoint\": \"approve\",\n            \"calldata\": [\n                \"0x1234567890123456789012345678901234567890\",\n                \"500000000000000000\",\n                \"0\"\n            ]\n        }\n    ]\n}"
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/v1/execute",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"execute"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "network",
+			"value": ""
+		},
+		{
+			"key": "walletAddress",
+			"value": ""
+		},
+		{
+			"key": "accessToken",
+			"value": ""
+		}
+	]
+}
