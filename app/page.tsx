@@ -663,23 +663,22 @@ export default function Home() {
 
           {/* Main header content - centered */}
           <div className="text-center mb-6">
-            <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="flex items-center justify-center gap-4 mb-4">
               <Image
                 src="/titulo.png"
                 alt="Fernet Barato"
-                width={240}
-                height={72}
-                className="h-16 w-auto"
+                width={320}
+                height={96}
+                className="h-20 w-auto"
               />
               <Image
                 src="/FernetBarato.png"
                 alt="Fernet Barato"
-                width={50}
-                height={78}
-                className="w-12 h-auto"
+                width={70}
+                height={109}
+                className="w-16 h-auto"
               />
             </div>
-            <p className="text-base text-gray-600">Los mejores precios cerca tuyo</p>
           </div>
 
           {/* Sort Filters */}
