@@ -16,28 +16,28 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
         <div className="mb-8">
           {/* Main Logo/Icon */}
           <div className="mb-6">
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/titulo.png"
+                alt="Fernet Barato"
+                width={400}
+                height={120}
+                className="w-[85%] h-auto"
+              />
+            </div>
             <div className="flex justify-center mb-2">
               <Image
                 src="/FernetBarato.png"
                 alt="Fernet Barato"
                 width={120}
-                height={187}
-                className="w-24 h-auto"
-              />
-            </div>
-            <div className="flex justify-center mb-4">
-              <Image
-                src="/titulo.png"
-                alt="Fernet Barato"
-                width={280}
-                height={84}
-                className="h-20 w-auto"
+                height={180}
+                className="w-22 h-auto"
               />
             </div>
                     {/* Call to Action */}
             <div className="space-y-4">  
               <h1 className="text-lg font-semibold mb-4">
-                ¡Encuentra el Fernet más barato cerca de ti! Inicia sesión para ver todos los precios, mapas
+                ¡Encontra el Fernet más barato cerca de vos! Inicia sesión para ver todos los precios, mapas
               </h1>
               <button
                 onClick={onGetStarted}
