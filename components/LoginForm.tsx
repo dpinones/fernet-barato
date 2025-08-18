@@ -82,20 +82,20 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white rounded-lg shadow-sm border p-6">
           <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="flex items-center justify-center gap-4 mb-4">
               <Image
                 src="/titulo.png"
                 alt="Fernet Barato"
-                width={200}
-                height={60}
-                className="h-12 w-auto"
+                width={280}
+                height={84}
+                className="h-16 w-auto"
               />
               <Image
                 src="/FernetBarato.png"
                 alt="Fernet Barato"
-                width={40}
-                height={62}
-                className="w-10 h-auto"
+                width={60}
+                height={93}
+                className="w-14 h-auto"
               />
             </div>
           </div>
