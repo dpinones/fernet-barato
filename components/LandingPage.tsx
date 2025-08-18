@@ -37,7 +37,7 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
                     {/* Call to Action */}
             <div className="space-y-4">  
               <h1 className="text-lg font-semibold mb-4">
-                ¡Encontra el Fernet más barato cerca de vos! Inicia sesión para ver todos los precios, mapas
+                ¡Encontra el Fernet más barato cerca tuyo! Logueate para ver todos los precios.
               </h1>
               <button
                 onClick={onGetStarted}
@@ -50,7 +50,7 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
 
           {/* Preview Section */}
           <div className="bg-white rounded-lg shadow-sm border p-4 mb-8">
-            <h2 className="text-lg font-semibold mb-4">Los mejores precios hoy</h2>
+            <h2 className="text-lg font-semibold mb-4">Precios hoy</h2>
             
             {loadingPreview ? (
               <div className="text-center py-4">
