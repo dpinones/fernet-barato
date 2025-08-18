@@ -84,13 +84,19 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-3 mb-4">
               <Image
+                src="/titulo.png"
+                alt="Fernet Barato"
+                width={200}
+                height={60}
+                className="h-12 w-auto"
+              />
+              <Image
                 src="/FernetBarato.png"
                 alt="Fernet Barato"
                 width={40}
                 height={62}
                 className="w-10 h-auto"
               />
-              <h1 className="text-3xl font-bold text-gray-900">Fernet Barato</h1>
             </div>
           </div>
         {/* <h2 className="text-xl font-semibold text-center mb-6">

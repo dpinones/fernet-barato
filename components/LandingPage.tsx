@@ -16,7 +16,7 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
         <div className="mb-8">
           {/* Main Logo/Icon */}
           <div className="mb-6">
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-2">
               <Image
                 src="/FernetBarato.png"
                 alt="Fernet Barato"
@@ -25,9 +25,15 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
                 className="w-24 h-auto"
               />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
-              Fernet Barato
-            </h1>
+            <div className="flex justify-center mb-4">
+              <Image
+                src="/titulo.png"
+                alt="Fernet Barato"
+                width={280}
+                height={84}
+                className="h-20 w-auto"
+              />
+            </div>
                     {/* Call to Action */}
             <div className="space-y-4">  
               <h1 className="text-lg font-semibold mb-4">

@@ -130,7 +130,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased font-inter">
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 

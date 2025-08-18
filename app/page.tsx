@@ -416,15 +416,14 @@ export default function Home() {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
           <div className="mb-6">
-            <div className="flex items-center justify-center gap-3 mb-2">
+            <div className="flex items-center justify-center mb-2">
               <Image
-                src="/FernetBarato.png"
+                src="/titulo.png"
                 alt="Fernet Barato"
-                width={40}
-                height={62}
-                className="w-10 h-auto"
+                width={200}
+                height={60}
+                className="h-12 w-auto"
               />
-              <h1 className="text-3xl font-bold text-gray-900">Fernet Barato</h1>
             </div>
             <div className="text-6xl mb-4">📱</div>
           </div>
@@ -664,16 +663,22 @@ export default function Home() {
 
           {/* Main header content - centered */}
           <div className="text-center mb-6">
-            <div className="flex justify-center mb-4">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Image
+                src="/titulo.png"
+                alt="Fernet Barato"
+                width={240}
+                height={72}
+                className="h-16 w-auto"
+              />
               <Image
                 src="/FernetBarato.png"
                 alt="Fernet Barato"
-                width={100}
-                height={156}
-                className="w-20 h-auto"
+                width={50}
+                height={78}
+                className="w-12 h-auto"
               />
             </div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Fernet Barato</h1>
             <p className="text-base text-gray-600">Los mejores precios cerca tuyo</p>
           </div>
 
