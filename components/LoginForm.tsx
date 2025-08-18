@@ -190,9 +190,9 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
               setFormData({ email: "", password: "" });
             }}
             disabled={isAnyLoading}
-            className="text-fernet-gold hover:text-yellow-600 text-sm w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-fernet-gold"
+            className="hover:text-yellow-600 text-sm w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-fernet-gold"
           >
-            {isLoginForm ? "¿No tienes una cuenta? Regístrate" : "¿Ya tienes una cuenta? Inicia sesión"}
+            {isLoginForm ? "¿No tenes una cuenta? Regístrate" : "¿Ya tienes una cuenta? Inicia sesión"}
           </button>
           
           {/* <a
