@@ -80,7 +80,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-white rounded-lg shadow-sm border p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-6">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-4 mb-4">
               <Image
@@ -115,7 +115,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-fernet-dark mb-1">
               Email
             </label>
             <input
@@ -124,7 +124,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-white border border-fernet-beige rounded-md text-fernet-dark placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-fernet-gold focus:border-transparent"
               placeholder="Ingresa tu email"
               required
               disabled={isAnyLoading}
@@ -132,7 +132,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-fernet-dark mb-1">
               Contraseña
             </label>
             <input
@@ -141,7 +141,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 bg-white border border-fernet-beige rounded-md text-fernet-dark placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-fernet-gold focus:border-transparent"
               placeholder="Ingresa tu contraseña"
               required
               disabled={isAnyLoading}
@@ -151,7 +151,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
           <button
             type="submit"
             disabled={isAnyLoading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-fernet-gold text-fernet-dark py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-fernet-gold focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
           >
             {isLoading ? "Loading..." : (isLoginForm ? "Iniciar sesión" : "Crear cuenta")}
           </button>
@@ -161,9 +161,9 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
         {isLoginForm && (
           <>
             <div className="mt-6 mb-4 flex items-center">
-              <div className="flex-1 border-t border-gray-300"></div>
-              <div className="px-3 text-sm text-gray-500">O continua con</div>
-              <div className="flex-1 border-t border-gray-300"></div>
+              <div className="flex-1 border-t border-fernet-beige"></div>
+              <div className="px-3 text-sm text-fernet-dark opacity-70">O continua con</div>
+              <div className="flex-1 border-t border-fernet-beige"></div>
             </div>
 
             <div className="space-y-3 flex flex-col items-center">
@@ -190,7 +190,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
               setFormData({ email: "", password: "" });
             }}
             disabled={isAnyLoading}
-            className="text-blue-600 hover:text-blue-800 text-sm w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-blue-600"
+            className="text-fernet-gold hover:text-yellow-600 text-sm w-full disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-fernet-gold"
           >
             {isLoginForm ? "¿No tienes una cuenta? Regístrate" : "¿Ya tienes una cuenta? Inicia sesión"}
           </button>

@@ -2,6 +2,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Emberly:wght@900&display=swap');
 @import "tailwindcss";
 
+/* Fernet Branca Color Palette */
+:root {
+  --fernet-dark: #1C1B1B;      /* Negro oscuro - texto principal */
+  --fernet-gold: #E6A700;      /* Dorado/Amarillo oro - acentos, CTAs */
+  --fernet-beige: #E0CBA3;     /* Beige/Crema - fondos, tarjetas */
+  --fernet-green: #003300;     /* Verde oscuro - detalles, íconos */
+  --fernet-white: #FFFFFF;     /* Blanco - fondos principales */
+}
+
 /* Custom utility classes */
 .font-emberly {
   font-family: 'Emberly', 'Inter', system-ui, -apple-system, sans-serif;
@@ -12,3 +21,26 @@
 .font-inter {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
+
+/* Fernet-themed background gradients */
+.bg-fernet-gradient {
+  background: linear-gradient(135deg, var(--fernet-green), var(--fernet-gold));
+}
+
+.bg-fernet-light {
+  background: linear-gradient(135deg, var(--fernet-beige), var(--fernet-white));
+}
+
+/* Custom color classes */
+.text-fernet-dark { color: var(--fernet-dark); }
+.text-fernet-gold { color: var(--fernet-gold); }
+.text-fernet-beige { color: var(--fernet-beige); }
+.text-fernet-green { color: var(--fernet-green); }
+
+.bg-fernet-dark { background-color: var(--fernet-dark); }
+.bg-fernet-gold { background-color: var(--fernet-gold); }
+.bg-fernet-beige { background-color: var(--fernet-beige); }
+.bg-fernet-green { background-color: var(--fernet-green); }
+
+.border-fernet-gold { border-color: var(--fernet-gold); }
+.border-fernet-beige { border-color: var(--fernet-beige); }

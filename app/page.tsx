@@ -413,8 +413,8 @@ export default function Home() {
   // Show desktop message if not mobile
   if (!isMobile) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md text-center">
+      <div className="min-h-screen bg-fernet-light flex items-center justify-center p-4">
+        <div className="bg-white rounded-lg shadow-lg border border-fernet-beige p-8 max-w-md text-center">
           <div className="mb-6">
             <div className="flex items-center justify-center mb-2">
               <Image
@@ -630,18 +630,18 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-fernet-light">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-white shadow-sm border-b border-fernet-beige">
         <div className="max-w-md mx-auto px-4 py-8 relative">
           
           {/* 3-dots menu - positioned absolute in top right */}
           <div className="absolute top-4 right-4 user-menu-container">
             <button
               onClick={() => setShowUserMenu(!showUserMenu)}
-              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-full hover:bg-fernet-beige hover:bg-opacity-50 transition-colors"
             >
-              <span className="text-gray-600 text-lg">⋮</span>
+              <span className="text-fernet-dark text-lg">⋮</span>
             </button>
             
             {showUserMenu && (
@@ -683,13 +683,13 @@ export default function Home() {
 
           {/* Sort Filters */}
           <div className="flex gap-2">
-            Filtrar por: 
+            <span className="text-fernet-dark font-medium">Filtrar por:</span> 
             <button
               onClick={() => setFilter({ ...filter, sortBy: 'price' })}
               className={`px-4 py-2 rounded-full text-sm font-medium ${
                 filter.sortBy === 'price'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-fernet-gold text-fernet-dark'
+                  : 'bg-fernet-beige text-fernet-dark hover:bg-fernet-beige hover:bg-opacity-80'
               }`}
             >
               Precio
@@ -698,8 +698,8 @@ export default function Home() {
               onClick={() => setFilter({ ...filter, sortBy: 'distance' })}
               className={`px-4 py-2 rounded-full text-sm font-medium ${
                 filter.sortBy === 'distance'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-fernet-gold text-fernet-dark'
+                  : 'bg-fernet-beige text-fernet-dark hover:bg-fernet-beige hover:bg-opacity-80'
               }`}
             >
               Distancia
@@ -710,12 +710,12 @@ export default function Home() {
 
       {/* Store List */}
       <div className="max-w-md mx-auto p-4">
-        <h2 className="text-lg font-semibold mb-4">Resultados</h2>
+        <h2 className="text-lg font-semibold mb-4 text-fernet-dark">Resultados</h2>
         
         {isLoading ? (
           <div className="text-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="text-gray-600 mt-2">Cargando precios...</p>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fernet-gold mx-auto"></div>
+            <p className="text-fernet-dark mt-2">Cargando precios...</p>
           </div>
         ) : (
           <div className="space-y-3">
@@ -723,21 +723,21 @@ export default function Home() {
               <div
                 key={store.id}
                 onClick={() => setSelectedStore(store)}
-                className="bg-white rounded-lg shadow-sm border p-4 hover:shadow-md transition-shadow cursor-pointer"
+                className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4 hover:shadow-md transition-shadow cursor-pointer"
               >
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-gray-900">{store.name}</h3>
+                      <h3 className="font-semibold text-fernet-dark">{store.name}</h3>
                       {index === 0 && (
-                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                        <span className="bg-fernet-gold text-fernet-dark text-xs px-2 py-1 rounded">
                           ⭐ MEJOR PRECIO
                         </span>
                       )}
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-lg font-bold text-green-600">
+                    <div className="text-lg font-bold text-fernet-green">
                       {store.price_display?.formatted_price || formatPrice(store.price_display?.price_in_cents || 0)}
                     </div>
                     {store.price_difference_from_cheapest! > 0 && (
@@ -748,7 +748,7 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="flex justify-between items-center text-xs text-gray-500">
+                <div className="flex justify-between items-center text-xs text-fernet-dark opacity-70">
                   {filter.sortBy === 'price' ? (
                     <>
                       <span className="flex items-center gap-1">

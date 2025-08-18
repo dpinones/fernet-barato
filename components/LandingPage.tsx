@@ -10,7 +10,7 @@ interface LandingPageProps {
 
 export default function LandingPage({ onGetStarted, previewStores, loadingPreview }: LandingPageProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-fernet-light flex items-center justify-center p-4">
       <div className="w-full max-w-md text-center">
         {/* Hero Section */}
         <div className="mb-8">
@@ -36,12 +36,12 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
             </div>
                     {/* Call to Action */}
             <div className="space-y-4">  
-              <h1 className="text-lg font-semibold mb-4">
+              <h1 className="text-lg font-semibold mb-4 text-fernet-dark">
                 ¡Encontra el Fernet más barato cerca tuyo! Logueate para ver todos los precios.
               </h1>
               <button
                 onClick={onGetStarted}
-                className="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white py-4 px-8 rounded-xl text-lg font-semibold hover:from-orange-700 hover:to-red-700 transform hover:scale-105 transition-all duration-200 shadow-lg"
+                className="w-full bg-fernet-gold text-fernet-dark py-4 px-8 rounded-xl text-lg font-semibold hover:bg-yellow-600 transform hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 Iniciar sesión
               </button>
@@ -49,35 +49,35 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
           </div>
 
           {/* Preview Section */}
-          <div className="bg-white rounded-lg shadow-sm border p-4 mb-8">
-            <h2 className="text-lg font-semibold mb-4">Precios hoy</h2>
+          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4 mb-8">
+            <h2 className="text-lg font-semibold mb-4 text-fernet-dark">Precios hoy</h2>
             
             {loadingPreview ? (
               <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-600 mx-auto"></div>
-                <p className="text-gray-600 mt-2 text-sm">Cargando precios...</p>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-fernet-gold mx-auto"></div>
+                <p className="text-fernet-dark mt-2 text-sm">Cargando precios...</p>
               </div>
             ) : previewStores.length > 0 ? (
               <div className="space-y-3">
                 {previewStores.map((storeData, index) => (
                   <div
                     key={storeData.store.id}
-                    className="border rounded-lg p-3 bg-gray-50"
+                    className="border border-fernet-beige rounded-lg p-3 bg-fernet-beige bg-opacity-30"
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1 text-left">
                         <div className="flex items-center gap-2">
-                          <h3 className="font-medium text-gray-900">{storeData.store.name}</h3>
+                          <h3 className="font-medium text-fernet-dark">{storeData.store.name}</h3>
                           {index === 0 && (
-                            <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">
+                            <span className="bg-fernet-gold text-fernet-dark text-xs px-2 py-1 rounded">
                               ⭐ MEJOR
                             </span>
                           )}
                         </div>
-                        <p className="text-sm text-gray-600 mt-1 truncate">{storeData.store.address}</p>
+                        <p className="text-sm text-fernet-dark opacity-70 mt-1 truncate">{storeData.store.address}</p>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-green-600">
+                        <div className="text-lg font-bold text-fernet-green">
                           {storeData.price.formatted_price}
                         </div>
                       </div>
@@ -87,7 +87,7 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
               </div>
             ) : (
               <div className="text-center py-4">
-                <p className="text-gray-600 text-sm">Cargando datos...</p>
+                <p className="text-fernet-dark opacity-70 text-sm">Cargando datos...</p>
               </div>
             )}
           </div>
