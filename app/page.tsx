@@ -414,7 +414,7 @@ export default function Home() {
   if (!isMobile) {
     return (
       <div className="min-h-screen bg-fernet-light flex items-center justify-center p-4">
-        <div className="bg-white rounded-lg shadow-lg border border-fernet-beige p-8 max-w-md text-center">
+        <div className="bg-fernet-beige rounded-lg shadow-lg border border-fernet-gold p-8 max-w-md text-center">
           <div className="mb-6">
             <div className="flex items-center justify-center mb-2">
               <Image
@@ -479,7 +479,7 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-fernet-light">
         {/* Header */}
-        <div className="bg-white border-b border-fernet-beige">
+        <div className="bg-fernet-beige border-b border-fernet-gold">
           <div className="max-w-md mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <button
@@ -498,7 +498,7 @@ export default function Home() {
                 </button>
                 
                 {showUserMenu && (
-                  <div className="absolute right-0 top-full mt-1 bg-white border border-fernet-beige rounded-lg shadow-lg whitespace-nowrap z-50">
+                  <div className="absolute right-0 top-full mt-1 bg-fernet-beige border border-fernet-gold rounded-lg shadow-lg whitespace-nowrap z-50">
                     <div className="py-1">
                       <button
                         onClick={() => {
@@ -521,7 +521,7 @@ export default function Home() {
         {/* Store Details */}
         <div className="flex justify-center">
           <div className="max-w-md p-4 space-y-4">
-          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4">
+          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-xl font-bold text-fernet-dark">{selectedStore.name}</h2>
               {selectedStore.reports.length > 0 && (
@@ -551,7 +551,7 @@ export default function Home() {
           </div>
 
           {/* Price Info */}
-          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4">
+          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4">
             <h3 className="text-lg font-semibold mb-3 text-fernet-dark">Precio Actual</h3>
             <div className="flex items-center justify-between mb-3">
               <span className="text-2xl font-bold text-fernet-green">
@@ -574,7 +574,7 @@ export default function Home() {
           </div>
 
           {/* Thanks Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4">
+          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-fernet-dark">Agradecimientos</h3>
@@ -590,7 +590,7 @@ export default function Home() {
           </div>
 
           {/* Report Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4">
+          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-fernet-dark">¿Hay algún problema?</h3>
@@ -632,8 +632,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-fernet-light">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b border-fernet-beige">
-        <div className="max-w-md mx-auto px-4 py-8 relative">
+      <div>
+        <div className="max-w-md mx-auto px-4 pt-8 relative">
           
           {/* 3-dots menu - positioned absolute in top right */}
           <div className="absolute top-4 right-4 user-menu-container">
@@ -645,7 +645,7 @@ export default function Home() {
             </button>
             
             {showUserMenu && (
-              <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg whitespace-nowrap z-50">
+              <div className="absolute right-0 top-full mt-1 bg-fernet-beige border border-fernet-gold rounded-lg shadow-lg whitespace-nowrap z-50">
                 <div className="py-1">
                   <button
                     onClick={() => {
@@ -682,8 +682,7 @@ export default function Home() {
           </div>
 
           {/* Sort Filters */}
-          <div className="flex gap-2">
-            <span className="text-fernet-dark font-medium">Filtrar por:</span> 
+          <div className="flex gap-2 justify-center">
             <button
               onClick={() => setFilter({ ...filter, sortBy: 'price' })}
               className={`px-4 py-2 rounded-full text-sm font-medium ${
@@ -710,7 +709,7 @@ export default function Home() {
 
       {/* Store List */}
       <div className="max-w-md mx-auto p-4">
-        <h2 className="text-lg font-semibold mb-4 text-fernet-dark">Resultados</h2>
+        <h2 className="text-lg font-semibold mb-4 text-fernet-dark">Locales</h2>
         
         {isLoading ? (
           <div className="text-center py-8">
@@ -723,17 +722,17 @@ export default function Home() {
               <div
                 key={store.id}
                 onClick={() => setSelectedStore(store)}
-                className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4 hover:shadow-md transition-shadow cursor-pointer"
+                className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4 hover:shadow-md transition-shadow cursor-pointer"
               >
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
                       <h3 className="font-semibold text-fernet-dark">{store.name}</h3>
-                      {index === 0 && (
+                      {/* {index === 0 && (
                         <span className="bg-fernet-gold text-fernet-dark text-xs px-2 py-1 rounded">
                           ⭐ MEJOR PRECIO
                         </span>
-                      )}
+                      )} */}
                     </div>
                   </div>
                   <div className="text-right">
@@ -764,8 +763,8 @@ export default function Home() {
                           <span className="text-yellow-600">⚠️</span>
                         )}
                       </span>
-                      <span>
-                        {store.distance ? `${store.distance}km` : 'Calculando...'}
+                      <span className="text-base font-bold">
+                        {store.distance ? `${store.distance}km` : '...'}
                       </span>
                     </>
                   ) : (
@@ -783,8 +782,8 @@ export default function Home() {
                           <span className="text-yellow-600">⚠️</span>
                         )}
                       </span>
-                      <span className="font-semibold">
-                        {store.distance ? `${store.distance}km` : 'Calculando...'}
+                      <span className="text-base font-bold">
+                        {store.distance ? `${store.distance}km` : '...'}
                       </span>
                     </>
                   )}

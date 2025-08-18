@@ -80,7 +80,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-6">
+      <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-6">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-4 mb-4">
               <Image
@@ -124,7 +124,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 bg-white border border-fernet-beige rounded-md text-fernet-dark placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-fernet-gold focus:border-transparent"
+              className="w-full px-3 py-2 bg-fernet-beige bg-opacity-50 border border-fernet-gold rounded-md text-fernet-dark placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-fernet-gold focus:border-transparent"
               placeholder="Ingresa tu email"
               required
               disabled={isAnyLoading}
@@ -141,7 +141,7 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 bg-white border border-fernet-beige rounded-md text-fernet-dark placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-fernet-gold focus:border-transparent"
+              className="w-full px-3 py-2 bg-fernet-beige bg-opacity-50 border border-fernet-gold rounded-md text-fernet-dark placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-fernet-gold focus:border-transparent"
               placeholder="Ingresa tu contraseña"
               required
               disabled={isAnyLoading}

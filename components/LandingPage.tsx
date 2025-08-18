@@ -49,7 +49,7 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
           </div>
 
           {/* Preview Section */}
-          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4 mb-8">
+          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4 mb-8">
             <h2 className="text-lg font-semibold mb-4 text-fernet-dark">Precios hoy</h2>
             
             {loadingPreview ? (
@@ -62,7 +62,7 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
                 {previewStores.map((storeData, index) => (
                   <div
                     key={storeData.store.id}
-                    className="border border-fernet-beige rounded-lg p-3 bg-fernet-beige bg-opacity-30"
+                    className="border border-fernet-gold rounded-lg p-3 bg-fernet-dark bg-opacity-10"
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1 text-left">
