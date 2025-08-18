@@ -477,35 +477,35 @@ export default function Home() {
 
   if (selectedStore) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-fernet-light">
         {/* Header */}
-        <div className="bg-white">
+        <div className="bg-white border-b border-fernet-beige">
           <div className="max-w-md mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
               <button
                 onClick={() => setSelectedStore(null)}
-                className="text-blue-600 text-sm font-medium"
+                className="text-fernet-gold text-sm font-medium hover:text-yellow-600"
               >
                 ← Volver
               </button>
-              <h1 className="text-lg font-semibold">Detalles de Tienda</h1>
+              <h1 className="text-lg font-semibold text-fernet-dark">Detalles de Tienda</h1>
               <div className="relative user-menu-container">
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
+                  className="p-1.5 rounded-full hover:bg-fernet-beige hover:bg-opacity-50 transition-colors"
                 >
-                  <span className="text-gray-600 text-lg">⋮</span>
+                  <span className="text-fernet-dark text-lg">⋮</span>
                 </button>
                 
                 {showUserMenu && (
-                  <div className="absolute right-0 top-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg whitespace-nowrap z-50">
+                  <div className="absolute right-0 top-full mt-1 bg-white border border-fernet-beige rounded-lg shadow-lg whitespace-nowrap z-50">
                     <div className="py-1">
                       <button
                         onClick={() => {
                           handleSignOut();
                           setShowUserMenu(false);
                         }}
-                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+                        className="w-full text-left px-4 py-2 text-sm text-fernet-dark hover:bg-fernet-beige hover:bg-opacity-50 flex items-center gap-2"
                       >
                         <span>🚪</span>
                         Cerrar Sesión
@@ -521,11 +521,11 @@ export default function Home() {
         {/* Store Details */}
         <div className="flex justify-center">
           <div className="max-w-md p-4 space-y-4">
-          <div className="bg-white rounded-lg shadow-sm border p-4">
+          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4">
             <div className="flex justify-between items-start mb-4">
-              <h2 className="text-xl font-bold text-gray-900">{selectedStore.name}</h2>
+              <h2 className="text-xl font-bold text-fernet-dark">{selectedStore.name}</h2>
               {selectedStore.reports.length > 0 && (
-                <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded">
+                <span className="bg-fernet-gold text-fernet-dark text-xs px-2 py-1 rounded">
                   ⚠️ Reportado
                 </span>
               )}
@@ -533,28 +533,28 @@ export default function Home() {
             
             <div className="space-y-3 text-sm">
               <div>
-                <span className="text-gray-600">📍 Dirección:</span>
+                <span className="text-fernet-dark opacity-70">📍 Dirección:</span>
                 <a
                   href={`https://maps.app.goo.gl/${selectedStore.URI}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block font-medium text-lg text-blue-600 hover:text-blue-800 hover:underline transition-colors mt-1"
+                  className="block font-medium text-lg text-fernet-gold hover:text-yellow-600 hover:underline transition-colors mt-1"
                 >
                   {selectedStore.address} 📍 
                 </a>
               </div>
               <div>
-                <span className="text-gray-600">🕒 Horarios:</span>
-                <p className="font-medium">{selectedStore.hours}</p>
+                <span className="text-fernet-dark opacity-70">🕒 Horarios:</span>
+                <p className="font-medium text-fernet-dark">{selectedStore.hours}</p>
               </div>
             </div>
           </div>
 
           {/* Price Info */}
-          <div className="bg-white rounded-lg shadow-sm border p-4">
-            <h3 className="text-lg font-semibold mb-3">Precio Actual</h3>
+          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4">
+            <h3 className="text-lg font-semibold mb-3 text-fernet-dark">Precio Actual</h3>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-2xl font-bold text-green-600">
+              <span className="text-2xl font-bold text-fernet-green">
                 {selectedStore.price_display?.formatted_price || formatPrice(selectedStore.price_display?.price_in_cents || 0)}
               </span>
               {selectedStore.price_difference_from_cheapest! > 0 && (
@@ -565,24 +565,24 @@ export default function Home() {
               )}
             </div>
             
-            <div className="text-xs text-gray-500 flex items-center gap-2">
+            <div className="text-xs text-fernet-dark opacity-70 flex items-center gap-2">
               <span>Actualizado: {formatTimestamp(selectedStore.current_price.timestamp)}</span>
               {isOldPrice(selectedStore.current_price.timestamp) && (
-                <span className="text-yellow-600">⚠️</span>
+                <span className="text-fernet-gold">⚠️</span>
               )}
             </div>
           </div>
 
           {/* Thanks Section */}
-          <div className="bg-white rounded-lg shadow-sm border p-4">
+          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold">Agradecimientos</h3>
-                <p className="text-sm text-gray-600">{selectedStore.thanks_count} personas agradecieron</p>
+                <h3 className="text-lg font-semibold text-fernet-dark">Agradecimientos</h3>
+                <p className="text-sm text-fernet-dark opacity-70">{selectedStore.thanks_count} personas agradecieron</p>
               </div>
               <button
                 onClick={() => handleGiveThanks(selectedStore.id)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-700"
+                className="bg-fernet-gold text-fernet-dark px-4 py-2 rounded-md text-sm hover:bg-yellow-600 font-semibold"
               >
                 👍 Dar Gracias
               </button>
@@ -590,11 +590,11 @@ export default function Home() {
           </div>
 
           {/* Report Section */}
-          <div className="bg-white rounded-lg shadow-sm border p-4">
+          <div className="bg-white rounded-lg shadow-sm border border-fernet-beige p-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-semibold">¿Hay algún problema?</h3>
-                <p className="text-sm text-gray-600">
+                <h3 className="text-lg font-semibold text-fernet-dark">¿Hay algún problema?</h3>
+                <p className="text-sm text-fernet-dark opacity-70">
                   {selectedStore.reports.length > 0 
                     ? `${selectedStore.reports.length} reporte(s) registrado(s)`
                     : 'Ayúdanos a mantener la información actualizada'
@@ -603,15 +603,15 @@ export default function Home() {
               </div>
               <button
                 onClick={() => setShowReportModal(true)}
-                className="bg-red-600 text-white px-4 py-2 rounded-md text-sm hover:bg-red-700"
+                className="bg-red-600 text-white px-4 py-2 rounded-md text-sm hover:bg-red-700 font-semibold"
               >
                 ⚠️ Reportar
               </button>
             </div>
             
             {selectedStore.reports.length > 0 && (
-              <div className="mt-3 pt-3 border-t">
-                <p className="text-xs text-gray-500">
+              <div className="mt-3 pt-3 border-t border-fernet-beige">
+                <p className="text-xs text-fernet-dark opacity-70">
                   Último reporte: {selectedStore.reports[0]?.description}
                 </p>
               </div>
@@ -619,7 +619,7 @@ export default function Home() {
           </div>
 
           {message && (
-            <div className="bg-yellow-50 text-yellow-700 p-3 rounded border border-yellow-200 text-sm">
+            <div className="bg-fernet-beige bg-opacity-50 text-fernet-dark p-3 rounded border border-fernet-beige text-sm">
               {message}
             </div>
           )}
