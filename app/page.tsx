@@ -458,20 +458,6 @@ export default function Home() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center p-4">
         <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Image
-                src="/FernetBarato.png"
-                alt="Fernet Barato"
-                width={40}
-                height={62}
-                className="w-10 h-auto"
-              />
-              <h1 className="text-3xl font-bold text-gray-900">Fernet Barato</h1>
-            </div>
-            <p className="text-gray-600">Los mejores precios cerca tuyo</p>
-          </div>
-          
           <LoginForm onSignIn={handleSignIn} />
           
           {/* Back to landing button */}
@@ -534,7 +520,8 @@ export default function Home() {
         </div>
 
         {/* Store Details */}
-        <div className="max-w-md mx-auto p-4 space-y-4">
+        <div className="flex justify-center">
+          <div className="max-w-md p-4 space-y-4">
           <div className="bg-white rounded-lg shadow-sm border p-4">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-xl font-bold text-gray-900">{selectedStore.name}</h2>
@@ -548,17 +535,14 @@ export default function Home() {
             <div className="space-y-3 text-sm">
               <div>
                 <span className="text-gray-600">📍 Dirección:</span>
-                <div className="flex items-start justify-between gap-2">
-                  <p className="font-medium flex-1">{selectedStore.address}</p>
-                  <a
-                    href={`https://maps.app.goo.gl/${selectedStore.URI}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-blue-600 text-white text-xs px-2 py-1 rounded hover:bg-blue-700 transition-colors whitespace-nowrap"
-                  >
-                    Ver en el mapa
-                  </a>
-                </div>
+                <a
+                  href={`https://maps.app.goo.gl/${selectedStore.URI}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block font-medium text-lg text-blue-600 hover:text-blue-800 hover:underline transition-colors mt-1"
+                >
+                  {selectedStore.address} 📍 
+                </a>
               </div>
               <div>
                 <span className="text-gray-600">🕒 Horarios:</span>
@@ -640,6 +624,7 @@ export default function Home() {
               {message}
             </div>
           )}
+          </div>
         </div>
       </div>
     );

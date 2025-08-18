@@ -81,18 +81,21 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="bg-white rounded-lg shadow-sm border p-6">
-        <div className="flex justify-center mb-6">
-          <Image
-            src="/FernetBarato.png"
-            alt="FernetBarato"
-            width={120}
-            height={187}
-            className="w-24 h-auto"
-          />
-        </div>
-        <h2 className="text-xl font-semibold text-center mb-6">
+          <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Image
+                src="/FernetBarato.png"
+                alt="Fernet Barato"
+                width={40}
+                height={62}
+                className="w-10 h-auto"
+              />
+              <h1 className="text-3xl font-bold text-gray-900">Fernet Barato</h1>
+            </div>
+          </div>
+        {/* <h2 className="text-xl font-semibold text-center mb-6">
           {isLoginForm ? "Iniciar sesión" : "Crear cuenta"}
-        </h2>
+        </h2> */}
 
         {message && (
           <div className={`mb-4 p-3 rounded text-sm ${
@@ -186,14 +189,14 @@ export default function LoginForm({ onSignIn }: LoginFormProps) {
             {isLoginForm ? "¿No tienes una cuenta? Regístrate" : "¿Ya tienes una cuenta? Inicia sesión"}
           </button>
           
-          <a
+          {/* <a
             href="https://docs.cavos.xyz"
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-600 hover:text-blue-800 text-xs block underline"
           >
             Documentation
-          </a>
+          </a> */}
         </div>
       </div>
     </div>

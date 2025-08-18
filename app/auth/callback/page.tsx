@@ -11,7 +11,7 @@ function AuthCallbackComponent() {
   const searchParams = useSearchParams();
   const signIn = useSetAtom(signInAtom);
   const [status, setStatus] = useState<"processing" | "success" | "error">("processing");
-  const [message, setMessage] = useState("Procesando autenticación...");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     const handleCallback = () => {
