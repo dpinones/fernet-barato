@@ -566,20 +566,20 @@ export default function Home() {
           </div>
 
           {/* Price Info */}
-          <div className="bg-fernet-beige rounded-xl shadow-lg border border-fernet-gold p-6">
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-4xl font-black text-fernet-green">
+          <div className="bg-fernet-beige rounded-xl shadow-lg border border-fernet-gold p-6 text-center">
+            <div className="mb-3">
+              <span className="text-4xl font-black text-fernet-green block">
                 💰 {selectedStore.price_display?.formatted_price || formatPrice(selectedStore.price_display?.price_in_cents || 0)}
               </span>
               {selectedStore.price_difference_from_cheapest! > 0 && (
-                <span className="text-red-600 text-sm">
-                  +{formatPrice(selectedStore.price_difference_from_cheapest!)} 
+                <span className="text-red-600 text-sm block mt-2">
+                  ↑ +{formatPrice(selectedStore.price_difference_from_cheapest!)} 
                   ({selectedStore.price_difference_percentage!.toFixed(1)}%)
                 </span>
               )}
             </div>
             
-            <div className="text-sm text-gray-700 font-semibold flex items-center gap-2">
+            <div className="text-sm text-gray-700 font-semibold flex items-center justify-center gap-2">
               <span>📅 Actualizado: {formatTimestamp(selectedStore.current_price.timestamp)}</span>
               {isOldPrice(selectedStore.current_price.timestamp) && (
                 <span className="text-fernet-gold">⚠️</span>
