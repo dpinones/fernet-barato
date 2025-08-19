@@ -658,7 +658,7 @@ export async function getPreviewStores(network: string = 'sepolia'): Promise<Arr
       if (allCurrentPrices.length > 0) {
         // Sort by price to get the cheapest ones first
         const sortedPrices = allCurrentPrices
-          .filter(item => item.price.price > 0n) // Filter out stores with no price
+          .filter(item => item.price.price !== "0" && item.price.price !== "") // Filter out stores with no price
           .sort((a, b) => {
             const priceA = Number(a.price.price);
             const priceB = Number(b.price.price);
