@@ -499,9 +499,9 @@ export default function Home() {
             <div className="flex items-center justify-between">
               <button
                 onClick={() => setSelectedStore(null)}
-                className="text-fernet-gold text-sm font-medium hover:text-yellow-600"
+                className="flex items-center gap-2  text-2xl font-semibold hover:text-yellow-600 transition-colors"
               >
-                ← Volver
+                ← 
               </button>
               <h1 className="text-lg font-semibold text-fernet-dark">Detalles de Tienda</h1>
               <div className="relative user-menu-container">
@@ -535,8 +535,8 @@ export default function Home() {
 
         {/* Store Details */}
         <div className="flex justify-center">
-          <div className="max-w-md p-4 space-y-4">
-          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4">
+          <div className="max-w-md p-4 space-y-6">
+          <div className="bg-fernet-beige rounded-xl shadow-lg border border-fernet-gold p-6">
             <div className="flex justify-between items-start mb-4">
               <h2 className="text-xl font-bold text-fernet-dark">{selectedStore.name}</h2>
               {selectedStore.reports.length > 0 && (
@@ -553,24 +553,23 @@ export default function Home() {
                   href={`https://maps.app.goo.gl/${selectedStore.URI}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block font-medium text-lg text-fernet-gold hover:text-yellow-600 hover:underline transition-colors mt-1"
+                  className="block font-bold text-lg text-blue-600 underline hover:text-blue-800 hover:bg-blue-50 rounded-md p-2 -m-2 transition-all duration-200 mt-1"
                 >
-                  {selectedStore.address} 📍 
+                  📍 {selectedStore.address} 
                 </a>
               </div>
               <div>
-                <span className="text-fernet-dark opacity-70">🕒 Horarios:</span>
-                <p className="font-medium text-fernet-dark">{selectedStore.hours}</p>
+                <span className="text-fernet-dark opacity-70 text-base">🕒 Horarios:</span>
+                <p className="font-semibold text-fernet-dark text-lg">{selectedStore.hours}</p>
               </div>
             </div>
           </div>
 
           {/* Price Info */}
-          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4">
-            <h3 className="text-lg font-semibold mb-3 text-fernet-dark">Precio Actual</h3>
+          <div className="bg-fernet-beige rounded-xl shadow-lg border border-fernet-gold p-6">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-2xl font-bold text-fernet-green">
-                {selectedStore.price_display?.formatted_price || formatPrice(selectedStore.price_display?.price_in_cents || 0)}
+              <span className="text-4xl font-black text-fernet-green">
+                💰 {selectedStore.price_display?.formatted_price || formatPrice(selectedStore.price_display?.price_in_cents || 0)}
               </span>
               {selectedStore.price_difference_from_cheapest! > 0 && (
                 <span className="text-red-600 text-sm">
@@ -580,8 +579,8 @@ export default function Home() {
               )}
             </div>
             
-            <div className="text-xs text-fernet-dark opacity-70 flex items-center gap-2">
-              <span>Actualizado: {formatTimestamp(selectedStore.current_price.timestamp)}</span>
+            <div className="text-sm text-gray-700 font-semibold flex items-center gap-2">
+              <span>📅 Actualizado: {formatTimestamp(selectedStore.current_price.timestamp)}</span>
               {isOldPrice(selectedStore.current_price.timestamp) && (
                 <span className="text-fernet-gold">⚠️</span>
               )}
@@ -589,15 +588,17 @@ export default function Home() {
           </div>
 
           {/* Thanks Section */}
-          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4">
+          <div className="bg-fernet-beige rounded-xl shadow-lg border border-fernet-gold p-6">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-fernet-dark">Agradecimientos</h3>
-                <p className="text-sm text-fernet-dark opacity-70">{selectedStore.thanks_count} personas agradecieron</p>
+                <p className="text-sm text-fernet-dark opacity-70">
+                  {selectedStore.thanks_count} {selectedStore.thanks_count === 1 ? 'persona agradeció' : 'personas agradecieron'}
+                </p>
               </div>
               <button
                 onClick={() => handleGiveThanks(selectedStore.id)}
-                className="bg-fernet-gold text-fernet-dark px-4 py-2 rounded-md text-sm hover:bg-yellow-600 font-semibold"
+                className="bg-green-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-green-600 font-semibold shadow-md hover:shadow-lg transition-all duration-200"
               >
                 👍 Dar Gracias
               </button>
@@ -605,7 +606,7 @@ export default function Home() {
           </div>
 
           {/* Report Section */}
-          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4">
+          <div className="bg-fernet-beige rounded-xl shadow-lg border border-fernet-gold p-6">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-fernet-dark">¿Hay algún problema?</h3>
@@ -618,7 +619,7 @@ export default function Home() {
               </div>
               <button
                 onClick={() => setShowReportModal(true)}
-                className="bg-red-600 text-white px-4 py-2 rounded-md text-sm hover:bg-red-700 font-semibold"
+                className="bg-orange-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-orange-600 font-semibold shadow-md hover:shadow-lg transition-all duration-200"
               >
                 ⚠️ Reportar
               </button>
