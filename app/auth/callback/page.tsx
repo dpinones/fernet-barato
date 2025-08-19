@@ -41,7 +41,7 @@ function AuthCallbackComponent() {
           
           setStatus("success");
           // setMessage("Authentication successful! Redirecting...");
-          setTimeout(() => router.push("/"), 1000);
+          router.push("/");
         } else {
           setStatus("error");
           setMessage("No authentication data received");
