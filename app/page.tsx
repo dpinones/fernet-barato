@@ -40,7 +40,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
-  const [showLanding, setShowLanding] = useState(!isAuthenticated);
+  const [showLanding, setShowLanding] = useState(true); // Always start with landing to avoid hydration mismatch
   const [message, setMessage] = useState("");
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locationPermission, setLocationPermission] = useState<'granted' | 'denied' | 'prompt' | null>(null);
@@ -49,6 +49,7 @@ export default function Home() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [previewStores, setPreviewStores] = useState<Array<{store: { id: string; name: string; address: string; hours: string; URI: string; }, price: { store_id: string; price_in_cents: number; timestamp: number; formatted_price: string; }}>>([]);
   const [loadingPreview, setLoadingPreview] = useState(false);
+  const [isClientSide, setIsClientSide] = useState(false);
 
   // Function to detect if device is mobile
   const detectMobile = useCallback(() => {
@@ -57,8 +58,9 @@ export default function Home() {
     return isMobileDevice || isMobileScreen;
   }, []);
 
-  // Check if device is mobile on mount
+  // Set client-side flag and check if device is mobile on mount
   useEffect(() => {
+    setIsClientSide(true);
     setIsMobile(detectMobile());
     
     const handleResize = () => {
@@ -425,6 +427,17 @@ export default function Home() {
     setShowUserMenu(false);
   };
 
+  // Prevent hydration mismatch by not rendering until client-side
+  if (!isClientSide) {
+    return (
+      <div className="min-h-screen bg-fernet-light flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fernet-gold mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
   // Show desktop message if not mobile
   if (!isMobile) {
     return (
@@ -733,7 +746,7 @@ export default function Home() {
           </div>
         ) : (
           <div className="space-y-4">
-            {stores.map((store, index) => (
+            {stores.map((store) => (
               <div
                 key={store.id}
                 onClick={() => setSelectedStore(store)}
