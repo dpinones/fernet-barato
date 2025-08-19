@@ -781,8 +781,10 @@ export default function Home() {
                           <span className="text-fernet-gold">⚠️</span>
                         )}
                       </span>
-                      <span className="text-base font-bold text-fernet-dark">
-                        📍 {store.distance ? `${store.distance}km` : '...'}
+                      <span className="text-base font-bold text-fernet-dark flex items-center gap-1">
+                        📍 {store.distance ? `${store.distance}km` : (
+                          <div className="animate-spin rounded-full h-3 w-3 border-b border-fernet-gold"></div>
+                        )}
                       </span>
                     </>
                   ) : (
@@ -802,8 +804,10 @@ export default function Home() {
                           <span className="text-fernet-gold">⚠️</span>
                         )}
                       </span>
-                      <span className="text-base font-bold text-fernet-dark">
-                        📍 {store.distance ? `${store.distance}km` : '...'}
+                      <span className="text-base font-bold text-fernet-dark flex items-center gap-1">
+                        📍 {store.distance ? `${store.distance}km` : (
+                          <div className="animate-spin rounded-full h-3 w-3 border-b border-fernet-gold"></div>
+                        )}
                       </span>
                     </>
                   )}
