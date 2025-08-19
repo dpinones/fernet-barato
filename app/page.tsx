@@ -756,7 +756,7 @@ export default function Home() {
                     </div>
                     {store.price_difference_from_cheapest! > 0 && (
                       <div className="text-sm text-red-600 font-semibold">
-                        ↑ +{formatPrice(store.price_difference_from_cheapest!)}
+                        +{formatPrice(store.price_difference_from_cheapest!)}
                       </div>
                     )}
                   </div>
