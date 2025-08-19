@@ -606,7 +606,7 @@ export default function Home() {
           </div>
 
           {/* Report Section */}
-          <div className="bg-fernet-beige rounded-xl shadow-lg border border-fernet-gold p-6">
+          {/* <div className="bg-fernet-beige rounded-xl shadow-lg border border-fernet-gold p-6">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-semibold text-fernet-dark">¿Hay algún problema?</h3>
@@ -632,7 +632,7 @@ export default function Home() {
                 </p>
               </div>
             )}
-          </div>
+          </div> */}
 
           {message && (
             <div className="bg-fernet-beige bg-opacity-50 text-fernet-dark p-3 rounded border border-fernet-beige text-sm">
@@ -725,7 +725,7 @@ export default function Home() {
 
       {/* Store List */}
       <div className="max-w-md mx-auto p-4">
-        <h2 className="text-lg font-semibold mb-4 text-fernet-dark">Locales</h2>
+        <h2 className="text-xl font-semibold mb-4 text-fernet-dark text-center">Locales</h2>
         
         {isLoading ? (
           <div className="text-center py-8">

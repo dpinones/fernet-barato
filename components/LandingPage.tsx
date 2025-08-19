@@ -49,36 +49,31 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
           </div>
 
           {/* Preview Section */}
-          <div className="bg-fernet-beige rounded-lg shadow-sm border border-fernet-gold p-4 mb-8">
-            <h2 className="text-lg font-semibold mb-4 text-fernet-dark">Precios hoy</h2>
+          <div className="rounded-xl p-6 mb-8">
+            <h2 className="text-lg font-semibold mb-2 text-fernet-dark text-center">
+              Hay {previewStores.length - 2 } precios mejores
+            </h2>
             
             {loadingPreview ? (
               <div className="text-center py-4">
                 <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-fernet-gold mx-auto"></div>
-                <p className="text-fernet-dark mt-2 text-sm">Cargando precios...</p>
               </div>
             ) : previewStores.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {previewStores.map((storeData, index) => (
                   <div
                     key={storeData.store.id}
-                    className="border border-fernet-gold rounded-lg p-3 bg-fernet-dark bg-opacity-10"
+                    className="rounded-xl shadow-md border border-fernet-gold p-5 hover:shadow-lg transition-all duration-200"
                   >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1 text-left">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-medium text-fernet-dark">{storeData.store.name}</h3>
-                          {index === 0 && (
-                            <span className="bg-fernet-gold text-fernet-dark text-xs px-2 py-1 rounded">
-                              ⭐ MEJOR
-                            </span>
-                          )}
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3">
+                          <h3 className="font-bold text-lg text-fernet-dark">{storeData.store.name}</h3>
                         </div>
-                        <p className="text-sm text-fernet-dark opacity-70 mt-1 truncate">{storeData.store.address}</p>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-fernet-green">
-                          {storeData.price.formatted_price}
+                        <div className="text-xl font-black text-fernet-green">
+                          💰 {storeData.price.formatted_price}
                         </div>
                       </div>
                     </div>
@@ -87,7 +82,7 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
               </div>
             ) : (
               <div className="text-center py-4">
-                <p className="text-fernet-dark opacity-70 text-sm">Cargando datos...</p>
+                <p className="text-fernet-dark opacity-70 text-sm"></p>
               </div>
             )}
           </div>

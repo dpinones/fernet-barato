@@ -638,27 +638,66 @@ export async function getAllStoresWithCurrentPrices(params: ContractCallParams):
   }
 }
 
-// Function to get preview stores (simplified version without prices for now)
+// Function to get preview stores with real prices (fallback to mock if needed)
 export async function getPreviewStores(network: string = 'sepolia'): Promise<Array<{store: Store, price: PriceDisplay}>> {
   try {
     console.log('Getting preview stores for network:', network);
     
-    // Create mock ContractCallParams for the existing functions
+    // Create params for contract calls
     const mockParams: ContractCallParams = {
       walletAddress: '0x0', // Mock address since we're only reading
       network: network,
       accessToken: '' // Empty since we're only doing read operations
     };
     
-    // For now, just get stores and show them with mock prices
-    // This avoids the contract parsing issues while still showing preview
-    const stores = await getAllStores(mockParams);
-    console.log('Preview stores loaded:', stores.length);
+    // Try to get real current prices from the contract
+    try {
+      const allCurrentPrices = await getAllCurrentPrices(mockParams);
+      console.log('Preview - real current prices loaded:', allCurrentPrices.length);
+      
+      if (allCurrentPrices.length > 0) {
+        // Sort by price to get the cheapest ones first
+        const sortedPrices = allCurrentPrices
+          .filter(item => item.price.price > 0n) // Filter out stores with no price
+          .sort((a, b) => {
+            const priceA = Number(a.price.price);
+            const priceB = Number(b.price.price);
+            return priceA - priceB;
+          })
+          .slice(0, 2); // Take the 2 cheapest stores
+        
+        const allStores = await getAllStores(mockParams);
+        console.log('Preview - stores loaded:', allStores.length);
+        
+        // Create preview stores with real prices
+        const previewStores: Array<{store: Store, price: PriceDisplay}> = [];
+        
+        for (const priceData of sortedPrices) {
+          const store = allStores.find(s => s.id === priceData.store_id);
+          if (store) {
+            const priceDisplay = priceToDisplay(priceData.price, priceData.store_id);
+            previewStores.push({
+              store,
+              price: priceDisplay
+            });
+          }
+        }
+        
+        console.log('Preview stores with real prices:', previewStores);
+        return previewStores;
+      }
+    } catch (priceError) {
+      console.warn('Could not get real prices for preview, using fallback:', priceError);
+    }
     
-    // Create mock stores with sample prices for preview
-    const storesWithMockPrices: Array<{store: Store, price: PriceDisplay}> = stores.slice(0, 2).map((store, index) => {
-      // Mock prices: first store cheaper than second
-      const mockPriceInCents = index === 0 ? 180000 : 185000; // $1800 vs $1850
+    // Fallback: Get stores and use realistic mock prices (around $15,000)
+    const stores = await getAllStores(mockParams);
+    console.log('Preview stores loaded (fallback):', stores.length);
+    
+    // Create stores with realistic mock prices for preview
+    const storesWithRealisticPrices: Array<{store: Store, price: PriceDisplay}> = stores.slice(0, 2).map((store, index) => {
+      // Realistic mock prices: around $15,000-$16,000
+      const mockPriceInCents = index === 0 ? 1500000 : 1580000; // $15,000 vs $15,800
       return {
         store,
         price: {
@@ -670,8 +709,8 @@ export async function getPreviewStores(network: string = 'sepolia'): Promise<Arr
       };
     });
     
-    console.log('Preview stores with mock prices:', storesWithMockPrices);
-    return storesWithMockPrices;
+    console.log('Preview stores with realistic mock prices:', storesWithRealisticPrices);
+    return storesWithRealisticPrices;
   } catch (error) {
     console.error('Error getting preview stores:', error);
     return []; // Return empty array instead of throwing to avoid breaking the preview
