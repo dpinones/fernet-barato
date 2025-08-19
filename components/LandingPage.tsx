@@ -52,7 +52,6 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
           {loadingPreview ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-fernet-gold mx-auto"></div>
-              <p className="text-fernet-dark mt-2 text-sm">Cargando precios...</p>
             </div>
           ) : previewStores.length > 0 ? (
             <div className=" p-6 mb-8">

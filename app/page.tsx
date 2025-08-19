@@ -730,7 +730,6 @@ export default function Home() {
         {isLoading ? (
           <div className="text-center py-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-fernet-gold mx-auto"></div>
-            <p className="text-fernet-dark mt-2">Cargando precios...</p>
           </div>
         ) : (
           <div className="space-y-4">
