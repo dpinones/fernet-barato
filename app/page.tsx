@@ -762,11 +762,13 @@ export default function Home() {
                   </div>
                 </div>
                 
-                <div className="flex justify-between items-center text-sm text-gray-600 font-medium">
+                <div className="flex justify-between items-center text-sm text-gray-700 font-medium">
                   {filter.sortBy === 'price' ? (
                     <>
                       <span className="flex items-center gap-1">
-                        {store.thanks_count > 0 && `⭐ ${store.thanks_count}`}
+                        {store.thanks_count > 0 && (
+                          <span className="text-base">⭐ {store.thanks_count}</span>
+                        )}
                         {store.thanks_count > 0 && " • "}
                         <span 
                           title={formatTimestamp(store.current_price.timestamp)}
@@ -785,7 +787,9 @@ export default function Home() {
                   ) : (
                     <>
                       <span className="flex items-center gap-1">
-                        {store.thanks_count > 0 && `⭐ ${store.thanks_count}`}
+                        {store.thanks_count > 0 && (
+                          <span className="text-base">⭐ {store.thanks_count}</span>
+                        )}
                         {store.thanks_count > 0 && " • "}
                         <span 
                           title={formatTimestamp(store.current_price.timestamp)}
