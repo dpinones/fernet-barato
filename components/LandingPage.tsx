@@ -48,19 +48,20 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
             </div>
           </div>
 
-          {/* Preview Section */}
-          <div className="rounded-xl p-6 mb-8">
-            <h2 className="text-lg font-semibold mb-2 text-fernet-dark text-center">
-              Hay {previewStores.length - 2 } precios mejores
-            </h2>
-            
-            {loadingPreview ? (
-              <div className="text-center py-4">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-fernet-gold mx-auto"></div>
-              </div>
-            ) : previewStores.length > 0 ? (
+          {/* Preview Section - Only show when loaded */}
+          {loadingPreview ? (
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-fernet-gold mx-auto"></div>
+              <p className="text-fernet-dark mt-2 text-sm">Cargando precios...</p>
+            </div>
+          ) : previewStores.length > 0 ? (
+            <div className=" p-6 mb-8">
+              <h2 className="text-lg font-semibold mb-4 text-fernet-dark text-center">
+                Hay {previewStores.length - 2} mejores precios disponibles!
+              </h2>
+              
               <div className="space-y-4">
-                {previewStores.map((storeData, index) => (
+                {previewStores.map((storeData) => (
                   <div
                     key={storeData.store.id}
                     className="rounded-xl shadow-md border border-fernet-gold p-5 hover:shadow-lg transition-all duration-200"
@@ -80,12 +81,8 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
                   </div>
                 ))}
               </div>
-            ) : (
-              <div className="text-center py-4">
-                <p className="text-fernet-dark opacity-70 text-sm"></p>
-              </div>
-            )}
-          </div>
+            </div>
+          ) : null}
         </div>
 
         {/* Footer Info */}
