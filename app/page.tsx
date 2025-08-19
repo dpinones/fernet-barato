@@ -8,7 +8,7 @@ import LoginForm from "../components/LoginForm";
 import AdminPanel from "../components/AdminPanel";
 import ReportModal from "../components/ReportModal";
 import { userAtom, isAuthenticatedAtom, signInAtom, signOutAtom } from "../lib/auth-atoms";
-import { getAllStoresWithPrices, giveThanks, priceToDisplay, isAdmin, getPreviewStores } from "../lib/contract";
+import { getAllStoresWithPrices, giveThanks, priceToDisplay, isAdmin } from "../lib/contract";
 import type { SignInResponse, FilterOptions } from "../lib/types";
 
 export default function Home() {
@@ -196,9 +196,39 @@ export default function Home() {
     setLoadingPreview(true);
     try {
       const network = process.env.NEXT_PUBLIC_STARKNET_NETWORK || 'sepolia';
-      const preview = await getPreviewStores(network);
-      console.log('Loaded preview stores:', preview);
-      setPreviewStores(preview);
+      
+      // Use the same contract params as the main list
+      const contractParams = {
+        walletAddress: '0x0', // Mock address for reading
+        network: network,
+        accessToken: '' // Empty for read operations
+      };
+      
+      // Get the same data as the main list
+      const storesData = await getAllStoresWithPrices(contractParams);
+      console.log('Loaded preview stores (same as main list):', storesData);
+
+      // Convert to preview format and take the first 2 cheapest
+      const storesWithPriceDisplay = storesData.map(store => {
+        const priceDisplay = priceToDisplay(store.current_price, store.id);
+        return {
+          store: {
+            id: store.id,
+            name: store.name,
+            address: store.address,
+            hours: store.hours,
+            URI: store.URI
+          },
+          price: priceDisplay
+        };
+      });
+
+      // Sort by price and take the 2 cheapest
+      const sortedByPrice = storesWithPriceDisplay.sort((a, b) => 
+        a.price.price_in_cents - b.price.price_in_cents
+      ).slice(0, 2);
+
+      setPreviewStores(sortedByPrice);
     } catch (error) {
       console.error('Error loading preview stores:', error);
       setPreviewStores([]);

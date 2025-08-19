@@ -56,7 +56,7 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
           ) : previewStores.length > 0 ? (
             <div className=" p-6 mb-8">
               <h2 className="text-lg font-semibold mb-4 text-fernet-dark text-center">
-                Hay {previewStores.length - 2} mejores precios disponibles!
+                Hay 7 mejores precios disponibles!
               </h2>
               
               <div className="space-y-4">
