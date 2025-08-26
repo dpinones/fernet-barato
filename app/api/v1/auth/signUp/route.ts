@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CavosAuth } from "cavos-service-sdk";
+import { CONTRACT_ADDRESS } from "./../../../../../lib/contract-config";
 
 export async function POST(request: NextRequest) {
   console.log("🚀 Signup request received");
@@ -95,6 +96,28 @@ export async function POST(request: NextRequest) {
     console.log("📤 Calling CavosAuth.signUp...");
     const result = await cavosAuth.signUp(email, password, orgSecret);
 
+    // After successful signup, call create_profile on the contract
+    try {
+      console.log("🏗️ Creating profile on contract...");
+      
+      const createProfileCall = {
+        contractAddress: CONTRACT_ADDRESS,
+        entrypoint: "create_profile",
+        calldata: []
+      };
+
+      const executeResult = await cavosAuth.executeCalls(
+        result.data.wallet.address,
+        [createProfileCall],
+        result.access_token
+      );
+
+      console.log("✅ Profile created on contract successfully:", executeResult.txHash);
+    } catch (contractError) {
+      console.error("⚠️ Failed to create profile on contract:", contractError);
+      // Don't fail the signup process if contract call fails
+    }
+
     return NextResponse.json({
       success: true,
       message: "User registered successfully",
@@ -102,6 +125,7 @@ export async function POST(request: NextRequest) {
         email: result.data.email,
         wallet_address: result.data.wallet.address,
         created_at: result.data.created_at,
+        access_token: result.access_token,
       },
     });
   } catch (error: unknown) {

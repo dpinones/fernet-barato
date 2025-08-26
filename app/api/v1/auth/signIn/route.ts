@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { CavosAuth } from "cavos-service-sdk";
+import { CONTRACT_ADDRESS } from "./../../../../../lib/contract-config";
 
 export async function POST(request: NextRequest) {
   console.log("🚀 Signin request received");
@@ -87,6 +88,28 @@ export async function POST(request: NextRequest) {
       walletAddress: result.data.wallet?.address,
       hasAccessToken: !!result.data.access_token,
     });
+
+    // After successful signin, call update_last_connected on the contract
+    try {
+      console.log("🔄 Updating last connected on contract...");
+      
+      const updateLastConnectedCall = {
+        contractAddress: CONTRACT_ADDRESS,
+        entrypoint: "update_last_connected",
+        calldata: []
+      };
+
+      const executeResult = await cavosAuth.executeCalls(
+        result.data.wallet.address,
+        [updateLastConnectedCall],
+        result.data.authData.accessToken
+      );
+
+      console.log("✅ Last connected updated on contract successfully:", executeResult.txHash);
+    } catch (contractError) {
+      console.error("⚠️ Failed to update last connected on contract:", contractError);
+      // Don't fail the signin process if contract call fails
+    }
 
     return NextResponse.json({
       success: true,

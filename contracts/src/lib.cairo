@@ -23,6 +23,14 @@ pub struct Report {
     pub submitted_by: ContractAddress,
 }
 
+#[derive(Drop, Copy, Serde, starknet::Store)]
+pub struct Profile {
+    pub user_address: ContractAddress,
+    pub report_count: u64,
+    pub thanks_count: u64,
+    pub last_connected: u64,
+}
+
 // Define the contract interface
 #[starknet::interface]
 pub trait IFernetBarato<TContractState> {
@@ -51,6 +59,12 @@ pub trait IFernetBarato<TContractState> {
     fn add_admin(ref self: TContractState, admin: ContractAddress);
     fn remove_admin(ref self: TContractState, admin: ContractAddress);
     fn is_admin(self: @TContractState, user: ContractAddress) -> bool;
+    
+    // Profile management functions
+    fn create_profile(ref self: TContractState);
+    fn update_last_connected(ref self: TContractState);
+    fn get_profile(self: @TContractState, user: ContractAddress) -> Profile;
+    fn profile_exists(self: @TContractState, user: ContractAddress) -> bool;
 }
 
 // Define the contract module
@@ -61,7 +75,7 @@ pub mod FernetBarato {
     use starknet::{get_caller_address, get_block_timestamp};
     
     // Import the types from the module scope
-    use super::{Store, Price, Report};
+    use super::{Store, Price, Report, Profile};
 
     // Storage structure
     #[storage]
@@ -89,8 +103,10 @@ pub mod FernetBarato {
         // Admin management
         admins: Map<ContractAddress, bool>,
         owner: ContractAddress,
+        
+        // User profiles
+        profiles: Map<ContractAddress, Profile>,
     }
-
 
     // Constructor
     #[constructor]
@@ -229,6 +245,7 @@ pub mod FernetBarato {
             
             let caller = get_caller_address();
             let current_time = get_block_timestamp();
+            let zero_address: ContractAddress = 0.try_into().unwrap();
             
             let report = Report {
                 store_id,
@@ -243,6 +260,23 @@ pub mod FernetBarato {
             
             // Update user's last report timestamp
             self.user_last_report.entry(caller).write(current_time);
+            
+            // Update user profile - increment report count
+            let mut profile = self.profiles.entry(caller).read();
+            if profile.user_address == zero_address {
+                // Create profile if doesn't exist
+                profile = Profile {
+                    user_address: caller,
+                    report_count: 1,
+                    thanks_count: 0,
+                    last_connected: current_time,
+                };
+            } else {
+                // Increment report count
+                profile.report_count += 1;
+                profile.last_connected = current_time;
+            }
+            self.profiles.entry(caller).write(profile);
         }
 
         fn get_reports(self: @ContractState, store_id: felt252) -> Array<Report> {
@@ -277,6 +311,8 @@ pub mod FernetBarato {
         // Thanks/Appreciation functions
         fn give_thanks(ref self: ContractState, store_id: felt252) {
             let caller = get_caller_address();
+            let current_time = get_block_timestamp();
+            let zero_address: ContractAddress = 0.try_into().unwrap();
             
             // Check if user has already thanked this store
             let has_thanked = self.user_thanks.entry((caller, store_id)).read();
@@ -293,6 +329,23 @@ pub mod FernetBarato {
             let current_count = self.store_thanks_count.entry(store_id).read();
             let new_count = current_count + 1;
             self.store_thanks_count.entry(store_id).write(new_count);
+            
+            // Update user profile - increment thanks count
+            let mut profile = self.profiles.entry(caller).read();
+            if profile.user_address == zero_address {
+                // Create profile if doesn't exist
+                profile = Profile {
+                    user_address: caller,
+                    report_count: 0,
+                    thanks_count: 1,
+                    last_connected: current_time,
+                };
+            } else {
+                // Increment thanks count
+                profile.thanks_count += 1;
+                profile.last_connected = current_time;
+            }
+            self.profiles.entry(caller).write(profile);
         }
         
         fn get_thanks_count(self: @ContractState, store_id: felt252) -> u64 {
@@ -301,6 +354,75 @@ pub mod FernetBarato {
         
         fn has_user_thanked(self: @ContractState, store_id: felt252, user: ContractAddress) -> bool {
             self.user_thanks.entry((user, store_id)).read()
+        }
+        
+        // Profile management functions
+        fn create_profile(ref self: ContractState) {
+            let caller = get_caller_address();
+            let current_time = get_block_timestamp();
+            
+            // Check if profile already exists
+            let existing_profile = self.profiles.entry(caller).read();
+            let zero_address: ContractAddress = 0.try_into().unwrap();
+            
+            if existing_profile.user_address == zero_address {
+                // Create new profile
+                let new_profile = Profile {
+                    user_address: caller,
+                    report_count: 0,
+                    thanks_count: 0,
+                    last_connected: current_time,
+                };
+                
+                self.profiles.entry(caller).write(new_profile);
+            }
+        }
+        
+        fn update_last_connected(ref self: ContractState) {
+            let caller = get_caller_address();
+            let current_time = get_block_timestamp();
+            let zero_address: ContractAddress = 0.try_into().unwrap();
+            
+            // Get existing profile or create new one
+            let mut profile = self.profiles.entry(caller).read();
+            
+            if profile.user_address == zero_address {
+                // Profile doesn't exist, create it
+                profile = Profile {
+                    user_address: caller,
+                    report_count: 0,
+                    thanks_count: 0,
+                    last_connected: current_time,
+                };
+            } else {
+                // Update last connected time
+                profile.last_connected = current_time;
+            }
+            
+            self.profiles.entry(caller).write(profile);
+        }
+        
+        fn get_profile(self: @ContractState, user: ContractAddress) -> Profile {
+            let profile = self.profiles.entry(user).read();
+            let zero_address: ContractAddress = 0.try_into().unwrap();
+            
+            if profile.user_address == zero_address {
+                // Return default profile if doesn't exist
+                Profile {
+                    user_address: user,
+                    report_count: 0,
+                    thanks_count: 0,
+                    last_connected: 0,
+                }
+            } else {
+                profile
+            }
+        }
+        
+        fn profile_exists(self: @ContractState, user: ContractAddress) -> bool {
+            let profile = self.profiles.entry(user).read();
+            let zero_address: ContractAddress = 0.try_into().unwrap();
+            profile.user_address != zero_address
         }
     }
 }
