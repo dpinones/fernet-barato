@@ -37,6 +37,8 @@ pub trait IFernetBarato<TContractState> {
     // Store management functions - ID is auto-incremental
     fn add_store(ref self: TContractState, name: ByteArray, address: ByteArray, 
                 hours: ByteArray, URI: ByteArray) -> felt252;
+    fn edit_store(ref self: TContractState, store_id: felt252, name: ByteArray, address: ByteArray, 
+                hours: ByteArray, URI: ByteArray);
     fn get_store(self: @TContractState, store_id: felt252) -> Store;
     fn get_all_stores(self: @TContractState) -> Array<Store>;
     
@@ -157,6 +159,26 @@ pub mod FernetBarato {
             self.stores.entry(store_id).write(store);
             self.store_count.write(store_count + 1);
             store_id // Return the generated ID
+        }
+
+        fn edit_store(ref self: ContractState, store_id: felt252, name: ByteArray, address: ByteArray, 
+                    hours: ByteArray, URI: ByteArray) {
+            self.assert_only_admin();
+            
+            // Check if store exists
+            let existing_store = self.stores.entry(store_id).read();
+            assert!(existing_store.id != 0, "Store does not exist");
+            
+            let updated_store = Store {
+                id: store_id,
+                name: name.clone(),
+                address: address.clone(),
+                hours,
+                URI,
+            };
+            
+            // Update the store
+            self.stores.entry(store_id).write(updated_store);
         }
 
         fn get_store(self: @ContractState, store_id: felt252) -> Store {

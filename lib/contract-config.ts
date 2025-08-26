@@ -187,6 +187,36 @@ export const CONTRACT_ABI = [
          },
          {
             "type":"function",
+            "name":"edit_store",
+            "inputs":[
+               {
+                  "name":"store_id",
+                  "type":"core::felt252"
+               },
+               {
+                  "name":"name",
+                  "type":"core::byte_array::ByteArray"
+               },
+               {
+                  "name":"address",
+                  "type":"core::byte_array::ByteArray"
+               },
+               {
+                  "name":"hours",
+                  "type":"core::byte_array::ByteArray"
+               },
+               {
+                  "name":"URI",
+                  "type":"core::byte_array::ByteArray"
+               }
+            ],
+            "outputs":[
+               
+            ],
+            "state_mutability":"external"
+         },
+         {
+            "type":"function",
             "name":"get_all_stores",
             "inputs":[
                
