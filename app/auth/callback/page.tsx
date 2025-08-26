@@ -14,41 +14,41 @@ function AuthCallbackComponent() {
   const [status, setStatus] = useState<"processing" | "success" | "error">("processing");
   const [message, setMessage] = useState("");
 
-  const handleUpdateLastConnected = async (userData: { wallet: { address: string; network?: string }; authData: { accessToken: string } }) => {
-    try {
-      console.log("🔄 Updating last connected after Google login...");
+  // const handleUpdateLastConnected = async (userData: { wallet: { address: string; network?: string }; authData: { accessToken: string } }) => {
+  //   try {
+  //     console.log("🔄 Updating last connected after Google login...");
       
-      const updateLastConnectedCall = {
-        contractAddress: CONTRACT_ADDRESS,
-        entrypoint: "update_last_connected",
-        calldata: []
-      };
+  //     const updateLastConnectedCall = {
+  //       contractAddress: CONTRACT_ADDRESS,
+  //       entrypoint: "update_last_connected",
+  //       calldata: []
+  //     };
 
-      const response = await fetch("/api/v1/execute", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          walletAddress: userData.wallet.address,
-          network: userData.wallet.network || "sepolia",
-          accessToken: userData.authData.accessToken,
-          calls: [updateLastConnectedCall],
-        }),
-      });
+  //     const response = await fetch("/api/v1/execute", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         walletAddress: userData.wallet.address,
+  //         network: userData.wallet.network || "sepolia",
+  //         accessToken: userData.authData.accessToken,
+  //         calls: [updateLastConnectedCall],
+  //       }),
+  //     });
 
-      const result = await response.json();
+  //     const result = await response.json();
       
-      if (result.success) {
-        console.log("✅ Last connected updated on contract after Google login:", result.data.txHash);
-      } else {
-        console.error("⚠️ Failed to update last connected on contract:", result.error);
-      }
-    } catch (error) {
-      console.error("⚠️ Failed to update last connected on contract:", error);
-      // Don't fail the login process if contract call fails
-    }
-  };
+  //     if (result.success) {
+  //       console.log("✅ Last connected updated on contract after Google login:", result.data.txHash);
+  //     } else {
+  //       console.error("⚠️ Failed to update last connected on contract:", result.error);
+  //     }
+  //   } catch (error) {
+  //     console.error("⚠️ Failed to update last connected on contract:", error);
+  //     // Don't fail the login process if contract call fails
+  //   }
+  // };
 
   useEffect(() => {
     const handleCallback = () => {
@@ -77,7 +77,7 @@ function AuthCallbackComponent() {
           signIn(signInResponse);
           
           // After successful Google login, call update_last_connected on the contract
-          handleUpdateLastConnected(parsedUserData).catch(console.error);
+          // handleUpdateLastConnected(parsedUserData).catch(console.error);
           
           setStatus("success");
           // setMessage("Authentication successful! Redirecting...");
