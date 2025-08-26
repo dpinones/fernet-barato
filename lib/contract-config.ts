@@ -1,5 +1,5 @@
 // Contract configuration for FernetBarato
-export const CONTRACT_ADDRESS = "0x0434f02eebb4546ce6232bf1743c8e5a2a534610bc0305a55c5412c2b85cbbca";
+export const CONTRACT_ADDRESS = "0x0555528f9b6352447d8c43a5247b32ee89df5023648431c361304807248d805a";
 
 export const CONTRACT_ABI = [
    {
