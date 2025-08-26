@@ -85,25 +85,65 @@ export default function Home() {
     return Math.round(distance * 10) / 10; // Round to 1 decimal place
   }, []);
 
-  // Function to get coordinates from address using a geocoding service
-  const getCoordinatesFromAddress = useCallback(async (address: string): Promise<{ lat: number; lng: number } | null> => {
+  // Function to extract coordinates from Google Maps link or geocode address
+  const getCoordinatesFromStore = useCallback(async (store: { address: string; URI: string }): Promise<{ lat: number; lng: number } | null> => {
     try {
-      // Using a free geocoding service (Nominatim from OpenStreetMap)
+      // First try to extract coordinates from Google Maps link
+      if (store.URI && (store.URI.includes('maps.google.com') || store.URI.includes('maps.app.goo.gl') || store.URI.includes('goo.gl/maps'))) {
+        console.log('Extracting coordinates from Google Maps link:', store.URI);
+        
+        // Try to extract coordinates from various Google Maps URL formats
+        const coordPatterns = [
+          /@(-?\d+\.?\d*),(-?\d+\.?\d*)/, // @lat,lng format
+          /!3d(-?\d+\.?\d*)!4d(-?\d+\.?\d*)/, // !3dlat!4dlng format
+          /ll=(-?\d+\.?\d*),(-?\d+\.?\d*)/, // ll=lat,lng format
+          /q=(-?\d+\.?\d*),(-?\d+\.?\d*)/, // q=lat,lng format
+        ];
+        
+        for (const pattern of coordPatterns) {
+          const match = store.URI.match(pattern);
+          if (match) {
+            const lat = parseFloat(match[1]);
+            const lng = parseFloat(match[2]);
+            
+            // Validate coordinates are in reasonable range for Argentina
+            if (lat >= -55 && lat <= -20 && lng >= -75 && lng <= -53) {
+              console.log('Extracted coordinates from Google Maps link:', { lat, lng });
+              return { lat, lng };
+            }
+          }
+        }
+      }
+      
+      // Fallback: Use geocoding with Pilar constraint
+      console.log('Fallback to geocoding for address:', store.address);
+      const searchQuery = `${store.address}, Pilar, Buenos Aires, Argentina`;
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address + ', Argentina')}&limit=1`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=1&bounded=1&viewbox=-58.95,-34.4,-58.87,-34.5`
       );
       const data = await response.json();
       
       if (data && data.length > 0) {
-        return {
-          lat: parseFloat(data[0].lat),
-          lng: parseFloat(data[0].lon)
-        };
+        const lat = parseFloat(data[0].lat);
+        const lng = parseFloat(data[0].lon);
+        
+        // Validate that coordinates are in Pilar area
+        if (lat >= -34.5 && lat <= -34.4 && lng >= -58.95 && lng <= -58.87) {
+          return { lat, lng };
+        } else {
+          console.warn('Coordinates outside Pilar area, using Pilar center:', { lat, lng, address: store.address });
+          return { lat: -34.4582, lng: -58.9142 };
+        }
       }
-      return null;
+      
+      // Final fallback to Pilar center
+      console.warn('No geocoding results, using Pilar center for:', store.address);
+      return { lat: -34.4582, lng: -58.9142 };
+      
     } catch (error) {
-      console.error('Error geocoding address:', error);
-      return null;
+      console.error('Error getting coordinates for store:', error);
+      // Fallback to Pilar center on error
+      return { lat: -34.4582, lng: -58.9142 };
     }
   }, []);
 
@@ -284,8 +324,8 @@ export default function Home() {
         storesWithDistances = await Promise.all(
           storesWithDifferences.map(async (store) => {
             try {
-              // Get coordinates for the store address
-              const coordinates = await getCoordinatesFromAddress(store.address);
+              // Get coordinates for the store using Google Maps link or address
+              const coordinates = await getCoordinatesFromStore(store);
               if (coordinates && userLocation) {
                 const distance = calculateDistance(
                   userLocation.lat,
@@ -318,7 +358,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [user?.access_token, user?.wallet_address, userLocation, getCoordinatesFromAddress, calculateDistance]);
+  }, [user?.access_token, user?.wallet_address, userLocation, getCoordinatesFromStore, calculateDistance]);
 
   // Handle filter changes without reloading data
   useEffect(() => {
@@ -598,7 +638,7 @@ export default function Home() {
                   rel="noopener noreferrer"
                   className="block font-bold text-lg text-blue-600 underline hover:text-blue-800 hover:bg-blue-50 rounded-md p-2 -m-2 transition-all duration-200 mt-1"
                 >
-                  📍 {selectedStore.address} 
+                  {selectedStore.address} 
                 </a>
               </div>
               <div>

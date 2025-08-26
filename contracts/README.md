@@ -12,7 +12,7 @@ declare \
 sncast --account dojo_sepolia \
 deploy \
 --url https://starknet-sepolia.public.blastapi.io/rpc/v0_8 \
---class-hash 0x07c768f334734f58834719076b1baa39a323990e11fa02d26717fa940369dae9 \
+--class-hash 0x049e0fd26ca82d31cf3b5c945da227fe3d01775b3502af559e4c3335832eb086 \
 --arguments "0x053c80dd051d0a515ba87dc8a3a32d56dc792e30d046ced89c6a537364e3435e"
 ```
 
