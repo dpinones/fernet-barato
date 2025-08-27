@@ -263,9 +263,9 @@ export default function Home() {
         };
       });
 
-      // Sort by price and take the 2 cheapest
+      // Sort by price and take the 2 most expensive
       const sortedByPrice = storesWithPriceDisplay.sort((a, b) => 
-        a.price.price_in_cents - b.price.price_in_cents
+        b.price.price_in_cents - a.price.price_in_cents
       ).slice(0, 2);
 
       setPreviewStores(sortedByPrice);
