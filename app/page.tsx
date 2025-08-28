@@ -8,6 +8,7 @@ import LoginForm from "../components/LoginForm";
 import AdminPanel from "../components/AdminPanel";
 import ReportModal from "../components/ReportModal";
 import { userAtom, isAuthenticatedAtom, signInAtom, signOutAtom } from "../lib/auth-atoms";
+import { getStoreDistance } from "../lib/store-coordinates";
 import { getAllStores, giveThanks, priceToDisplay, isAdmin, getThanksCount, getReports } from "../lib/contract";
 import type { SignInResponse, FilterOptions, Store, StoreWithPrice } from "../lib/types";
 
@@ -71,81 +72,7 @@ export default function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, [detectMobile]);
 
-  // Function to calculate distance between two coordinates using Haversine formula
-  const calculateDistance = useCallback((lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = (lat2 - lat1) * (Math.PI / 180);
-    const dLon = (lon2 - lon1) * (Math.PI / 180);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in kilometers
-    return Math.round(distance * 10) / 10; // Round to 1 decimal place
-  }, []);
 
-  // Function to extract coordinates from Google Maps link or geocode address
-  const getCoordinatesFromStore = useCallback(async (store: { address: string; URI: string }): Promise<{ lat: number; lng: number } | null> => {
-    try {
-      // First try to extract coordinates from Google Maps link
-      if (store.URI && (store.URI.includes('maps.google.com') || store.URI.includes('maps.app.goo.gl') || store.URI.includes('goo.gl/maps'))) {
-        console.log('Extracting coordinates from Google Maps link:', store.URI);
-        
-        // Try to extract coordinates from various Google Maps URL formats
-        const coordPatterns = [
-          /@(-?\d+\.?\d*),(-?\d+\.?\d*)/, // @lat,lng format
-          /!3d(-?\d+\.?\d*)!4d(-?\d+\.?\d*)/, // !3dlat!4dlng format
-          /ll=(-?\d+\.?\d*),(-?\d+\.?\d*)/, // ll=lat,lng format
-          /q=(-?\d+\.?\d*),(-?\d+\.?\d*)/, // q=lat,lng format
-        ];
-        
-        for (const pattern of coordPatterns) {
-          const match = store.URI.match(pattern);
-          if (match) {
-            const lat = parseFloat(match[1]);
-            const lng = parseFloat(match[2]);
-            
-            // Validate coordinates are in reasonable range for Argentina
-            if (lat >= -55 && lat <= -20 && lng >= -75 && lng <= -53) {
-              console.log('Extracted coordinates from Google Maps link:', { lat, lng });
-              return { lat, lng };
-            }
-          }
-        }
-      }
-      
-      // Fallback: Use geocoding with Pilar constraint
-      console.log('Fallback to geocoding for address:', store.address);
-      const searchQuery = `${store.address}, Pilar, Buenos Aires, Argentina`;
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}&limit=1&bounded=1&viewbox=-58.95,-34.4,-58.87,-34.5`
-      );
-      const data = await response.json();
-      
-      if (data && data.length > 0) {
-        const lat = parseFloat(data[0].lat);
-        const lng = parseFloat(data[0].lon);
-        
-        // Validate that coordinates are in Pilar area
-        if (lat >= -34.5 && lat <= -34.4 && lng >= -58.95 && lng <= -58.87) {
-          return { lat, lng };
-        } else {
-          console.warn('Coordinates outside Pilar area, using Pilar center:', { lat, lng, address: store.address });
-          return { lat: -34.4582, lng: -58.9142 };
-        }
-      }
-      
-      // Final fallback to Pilar center
-      console.warn('No geocoding results, using Pilar center for:', store.address);
-      return { lat: -34.4582, lng: -58.9142 };
-      
-    } catch (error) {
-      console.error('Error getting coordinates for store:', error);
-      // Fallback to Pilar center on error
-      return { lat: -34.4582, lng: -58.9142 };
-    }
-  }, []);
 
   // Function to get user's current location
   const getUserLocation = useCallback(() => {
@@ -336,39 +263,8 @@ export default function Home() {
           : 0
       }));
       
-      // Calculate distances if user location is available
-      let storesWithDistances = storesWithDifferences;
-      if (userLocation) {
-        console.log('Calculating distances from user location:', userLocation);
-        storesWithDistances = await Promise.all(
-          storesWithDifferences.map(async (store) => {
-            try {
-              // Get coordinates for the store using Google Maps link or address
-              const coordinates = await getCoordinatesFromStore(store);
-              if (coordinates && userLocation) {
-                const distance = calculateDistance(
-                  userLocation.lat,
-                  userLocation.lng,
-                  coordinates.lat,
-                  coordinates.lng
-                );
-                return {
-                  ...store,
-                  coordinates,
-                  distance
-                };
-              }
-              return store;
-            } catch (error) {
-              console.error('Error calculating distance for store:', store.name, error);
-              return store;
-            }
-          })
-        );
-      }
-
-      // Store raw data - filtering will be handled by the filter effect
-      setRawStores(storesWithDistances);
+      // Store raw data without distances initially - distances will be added by separate effect
+      setRawStores(storesWithDifferences);
     } catch (error) {
       console.error('Error loading stores:', error);
       setMessage('Error al cargar las tiendas desde el contrato');
@@ -377,15 +273,38 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [user?.access_token, user?.wallet_address, userLocation, getCoordinatesFromStore, calculateDistance]);
+  }, [user?.access_token, user?.wallet_address]);
 
-  // Handle filter changes without reloading data
+  // Calculate distances instantly when user location changes
   useEffect(() => {
-    if (rawStores.length > 0) {
+    if (rawStores.length > 0 && userLocation) {
+      console.log('Calculating distances from user location:', userLocation);
+      const storesWithDistances = rawStores.map((store) => {
+        try {
+          const distance = getStoreDistance(store.name, userLocation.lat, userLocation.lng);
+          if (distance !== null) {
+            return {
+              ...store,
+              distance: Math.round(distance * 10) / 10 // Round to 1 decimal place
+            };
+          }
+          return store;
+        } catch (error) {
+          console.error('Error calculating distance for store:', store.name, error);
+          return store;
+        }
+      });
+      
+      const sortedStores = sortStores(storesWithDistances, filter.sortBy);
+      setStores(sortedStores);
+    } else if (rawStores.length > 0) {
+      // No user location, just sort without distances
       const sortedStores = sortStores(rawStores, filter.sortBy);
       setStores(sortedStores);
     }
-  }, [filter.sortBy, rawStores, sortStores]);
+  }, [userLocation, rawStores, filter.sortBy, sortStores]);
+
+  // Handle filter changes without reloading data (now handled above)
 
   // Handle authentication state changes
   useEffect(() => {

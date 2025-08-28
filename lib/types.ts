@@ -52,6 +52,7 @@ export interface StoreWithPrice extends Store {
   reports: Report[];
   price_difference_from_cheapest?: number;
   price_difference_percentage?: number;
+  distance?: number; // Distance in kilometers from user location
 }
 
 // Helper interface for displaying prices in frontend

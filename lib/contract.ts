@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Contract, RpcProvider, shortString, CallData, byteArray, cairo } from 'starknet';
 import type { Store, Price, StoreWithPrice, Report, PriceDisplay } from './types';
 import { CONTRACT_ADDRESS, CONTRACT_ABI } from './contract-config';
+import { getStoreDistance } from './store-coordinates';
 
 export interface ContractCallParams {
   walletAddress: string;
@@ -583,7 +584,7 @@ export function priceToDisplay(price: Price, storeId: string): PriceDisplay {
 }
 
 // Helper function to get complete store data with prices and metadata
-export async function getStoreWithPrice(params: ContractCallParams, storeId: string): Promise<StoreWithPrice> {
+export async function getStoreWithPrice(params: ContractCallParams, storeId: string, userLat?: number, userLng?: number): Promise<StoreWithPrice> {
   try {
     const [store, thanksCount, reports] = await Promise.all([
       getStore(params, storeId),
@@ -591,10 +592,16 @@ export async function getStoreWithPrice(params: ContractCallParams, storeId: str
       getReports(params, storeId)
     ]);
 
+    let distance: number | undefined;
+    if (userLat !== undefined && userLng !== undefined) {
+      distance = getStoreDistance(store.name, userLat, userLng) || undefined;
+    }
+
     return {
       ...store,
       thanks_count: thanksCount,
-      reports
+      reports,
+      distance
     };
   } catch (error) {
     console.error('Error getting store with price:', error);
@@ -603,13 +610,13 @@ export async function getStoreWithPrice(params: ContractCallParams, storeId: str
 }
 
 // Helper function to get all stores with their complete data
-export async function getAllStoresWithPrices(params: ContractCallParams): Promise<StoreWithPrice[]> {
+export async function getAllStoresWithPrices(params: ContractCallParams, userLat?: number, userLng?: number): Promise<StoreWithPrice[]> {
   try {
     const stores = await getAllStores(params);
     
     // Get complete data for each store
     const storesWithPrices = await Promise.all(
-      stores.map(store => getStoreWithPrice(params, store.id))
+      stores.map(store => getStoreWithPrice(params, store.id, userLat, userLng))
     );
 
     return storesWithPrices;
