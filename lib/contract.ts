@@ -180,13 +180,21 @@ export async function getAllStores(params: ContractCallParams): Promise<Store[]>
           address: unknown;
           hours: unknown;
           URI: unknown;
+          current_price: {
+            price: unknown;
+            timestamp: { toString(): string };
+          };
         };
         stores.push({
           id: store.id.toString(),
           name: byteArrayToString(store.name),
           address: byteArrayToString(store.address),
           hours: byteArrayToString(store.hours),
-          URI: byteArrayToString(store.URI)
+          URI: byteArrayToString(store.URI),
+          current_price: {
+            price: u256ToNumber(store.current_price.price).toString(),
+            timestamp: Number(store.current_price.timestamp.toString())
+          }
         });
       }
     }
@@ -264,6 +272,10 @@ export async function getStore(params: ContractCallParams, storeId: string): Pro
       address: unknown;
       hours: unknown;
       URI: unknown;
+      current_price: {
+        price: unknown;
+        timestamp: { toString(): string };
+      };
     };
     
     return {
@@ -271,7 +283,11 @@ export async function getStore(params: ContractCallParams, storeId: string): Pro
       name: byteArrayToString(store.name),
       address: byteArrayToString(store.address),
       hours: byteArrayToString(store.hours),
-      URI: byteArrayToString(store.URI)
+      URI: byteArrayToString(store.URI),
+      current_price: {
+        price: u256ToNumber(store.current_price.price).toString(),
+        timestamp: Number(store.current_price.timestamp.toString())
+      }
     };
   } catch (error) {
     console.error('Error getting store:', error);
@@ -279,28 +295,28 @@ export async function getStore(params: ContractCallParams, storeId: string): Pro
   }
 }
 
-export async function getCurrentPrice(params: ContractCallParams, storeId: string): Promise<Price> {
-  try {
-    console.log('Calling get_current_price with network:', params.network, 'storeId:', storeId);
-    const contract = getContractForReading(params.network);
+// export async function getCurrentPrice(params: ContractCallParams, storeId: string): Promise<Price> {
+//   try {
+//     console.log('Calling get_current_price with network:', params.network, 'storeId:', storeId);
+//     const contract = getContractForReading(params.network);
     
-    const result = await contract.call('get_current_price', [storeId]);
-    console.log('Raw contract result for get_current_price:', result);
+//     const result = await contract.call('get_current_price', [storeId]);
+//     console.log('Raw contract result for get_current_price:', result);
     
-    const price = result as {
-      price: { toString(): string };
-      timestamp: number;
-    };
+//     const price = result as {
+//       price: { toString(): string };
+//       timestamp: number;
+//     };
     
-    return {
-      price: price.price.toString(),
-      timestamp: Number(price.timestamp)
-    };
-  } catch (error) {
-    console.error('Error getting current price:', error);
-    throw error;
-  }
-}
+//     return {
+//       price: price.price.toString(),
+//       timestamp: Number(price.timestamp)
+//     };
+//   } catch (error) {
+//     console.error('Error getting current price:', error);
+//     throw error;
+//   }
+// }
 
 export async function getPriceHistory(params: ContractCallParams, storeId: string): Promise<Price[]> {
   try {
@@ -515,7 +531,7 @@ export async function updatePrice(
 
 export async function addStore(
   params: ContractCallParams,
-  store: Omit<Store, 'id'>
+  store: Omit<Store, 'id' | 'current_price'>
 ) {
   try {
     
@@ -569,16 +585,14 @@ export function priceToDisplay(price: Price, storeId: string): PriceDisplay {
 // Helper function to get complete store data with prices and metadata
 export async function getStoreWithPrice(params: ContractCallParams, storeId: string): Promise<StoreWithPrice> {
   try {
-    const [store, price, thanksCount, reports] = await Promise.all([
+    const [store, thanksCount, reports] = await Promise.all([
       getStore(params, storeId),
-      getCurrentPrice(params, storeId),
       getThanksCount(params, storeId),
       getReports(params, storeId)
     ]);
 
     return {
       ...store,
-      current_price: price,
       thanks_count: thanksCount,
       reports
     };
@@ -608,28 +622,13 @@ export async function getAllStoresWithPrices(params: ContractCallParams): Promis
 // Helper function to get stores with current prices using the optimized contract method
 export async function getAllStoresWithCurrentPrices(params: ContractCallParams): Promise<Array<{store: Store, price: PriceDisplay}>> {
   try {
-    const [stores, prices] = await Promise.all([
-      getAllStores(params),
-      getAllCurrentPrices(params)
-    ]);
+    const stores = await getAllStores(params);
     
-    // Create a map of store_id to price for efficient lookup
-    const priceMap = new Map<string, Price>();
-    prices.forEach(priceData => {
-      priceMap.set(priceData.store_id, priceData.price);
-    });
-    
-    // Combine stores with their prices
-    const result: Array<{store: Store, price: PriceDisplay}> = [];
-    stores.forEach(store => {
-      const price = priceMap.get(store.id);
-      if (price) {
-        result.push({
-          store,
-          price: priceToDisplay(price, store.id)
-        });
-      }
-    });
+    // Convert stores with their built-in current_price to the expected format
+    const result: Array<{store: Store, price: PriceDisplay}> = stores.map(store => ({
+      store,
+      price: priceToDisplay(store.current_price, store.id)
+    }));
     
     return result;
   } catch (error) {

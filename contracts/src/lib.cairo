@@ -7,6 +7,7 @@ pub struct Store {
     pub address: ByteArray,
     pub hours: ByteArray,
     pub URI: ByteArray,
+    pub current_price: Price,
 }
 
 #[derive(Drop, Copy, Serde, starknet::Store)]
@@ -153,6 +154,7 @@ pub mod FernetBarato {
                 address: address.clone(),
                 hours,
                 URI,
+                current_price: Price { price: 0, timestamp: 0 },
             };
             
             // Store the shop and increment counter
@@ -175,6 +177,7 @@ pub mod FernetBarato {
                 address: address.clone(),
                 hours,
                 URI,
+                current_price: self.get_current_price(store_id),
             };
             
             // Update the store
@@ -182,7 +185,9 @@ pub mod FernetBarato {
         }
 
         fn get_store(self: @ContractState, store_id: felt252) -> Store {
-            self.stores.entry(store_id).read()
+            let mut store = self.stores.entry(store_id).read();
+            store.current_price = self.get_current_price(store_id);
+            store
         }
 
         fn get_all_stores(self: @ContractState) -> Array<Store> {
@@ -192,11 +197,9 @@ pub mod FernetBarato {
             
             while current_count < max_count {
                 let store_id: felt252 = current_count.into();
-                let store = self.stores.entry(store_id).read();
-                // Only add if store exists (id != 0)
-                if store.id != 0 {
-                    stores.append(store);
-                }
+                let mut store = self.stores.entry(store_id).read();
+                store.current_price = self.get_current_price(store_id);
+                stores.append(store);
                 current_count += 1;
             };
             

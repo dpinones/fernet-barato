@@ -32,6 +32,7 @@ export interface Store {
   address: string;
   hours: string;
   URI: string;
+  current_price: Price;
 }
 
 export interface Price {
@@ -47,7 +48,6 @@ export interface Report {
 }
 
 export interface StoreWithPrice extends Store {
-  current_price: Price;
   thanks_count: number;
   reports: Report[];
   price_difference_from_cheapest?: number;

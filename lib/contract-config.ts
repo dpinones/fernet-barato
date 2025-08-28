@@ -1,5 +1,5 @@
 // Contract configuration for FernetBarato
-export const CONTRACT_ADDRESS = "0x0555528f9b6352447d8c43a5247b32ee89df5023648431c361304807248d805a";
+export const CONTRACT_ADDRESS = "0x074be431870d9cc608ed79dd2d6dcf672a5da328ed89b25f4f698434a91638f8";
 
 export const CONTRACT_ABI = [
    {
@@ -22,32 +22,6 @@ export const CONTRACT_ABI = [
          {
             "name":"pending_word_len",
             "type":"core::integer::u32"
-         }
-      ]
-   },
-   {
-      "type":"struct",
-      "name":"fernet_barato::Store",
-      "members":[
-         {
-            "name":"id",
-            "type":"core::felt252"
-         },
-         {
-            "name":"name",
-            "type":"core::byte_array::ByteArray"
-         },
-         {
-            "name":"address",
-            "type":"core::byte_array::ByteArray"
-         },
-         {
-            "name":"hours",
-            "type":"core::byte_array::ByteArray"
-         },
-         {
-            "name":"URI",
-            "type":"core::byte_array::ByteArray"
          }
       ]
    },
@@ -76,6 +50,36 @@ export const CONTRACT_ABI = [
          {
             "name":"timestamp",
             "type":"core::integer::u64"
+         }
+      ]
+   },
+   {
+      "type":"struct",
+      "name":"fernet_barato::Store",
+      "members":[
+         {
+            "name":"id",
+            "type":"core::felt252"
+         },
+         {
+            "name":"name",
+            "type":"core::byte_array::ByteArray"
+         },
+         {
+            "name":"address",
+            "type":"core::byte_array::ByteArray"
+         },
+         {
+            "name":"hours",
+            "type":"core::byte_array::ByteArray"
+         },
+         {
+            "name":"URI",
+            "type":"core::byte_array::ByteArray"
+         },
+         {
+            "name":"current_price",
+            "type":"fernet_barato::Price"
          }
       ]
    },
@@ -171,22 +175,6 @@ export const CONTRACT_ABI = [
          },
          {
             "type":"function",
-            "name":"get_store",
-            "inputs":[
-               {
-                  "name":"store_id",
-                  "type":"core::felt252"
-               }
-            ],
-            "outputs":[
-               {
-                  "type":"fernet_barato::Store"
-               }
-            ],
-            "state_mutability":"view"
-         },
-         {
-            "type":"function",
             "name":"edit_store",
             "inputs":[
                {
@@ -214,6 +202,22 @@ export const CONTRACT_ABI = [
                
             ],
             "state_mutability":"external"
+         },
+         {
+            "type":"function",
+            "name":"get_store",
+            "inputs":[
+               {
+                  "name":"store_id",
+                  "type":"core::felt252"
+               }
+            ],
+            "outputs":[
+               {
+                  "type":"fernet_barato::Store"
+               }
+            ],
+            "state_mutability":"view"
          },
          {
             "type":"function",
