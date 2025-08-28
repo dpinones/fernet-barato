@@ -618,32 +618,31 @@ export default function Home() {
 
         {/* Store Details */}
         <div className="flex justify-center">
-          <div className="max-w-md p-4 space-y-6">
+          <div className="max-w-md mx-auto p-4 space-y-6">
           <div className="bg-fernet-beige rounded-xl shadow-lg border border-fernet-gold p-6">
-            <div className="flex justify-between items-start mb-4">
-              <h2 className="text-xl font-bold text-fernet-dark">{selectedStore.name}</h2>
+            <div className="text-center mb-4">
+              <h2 className="text-3xl font-bold text-fernet-dark">{selectedStore.name}</h2>
               {selectedStore.reports.length > 0 && (
-                <span className="bg-fernet-gold text-fernet-dark text-xs px-2 py-1 rounded">
+                <span className="bg-fernet-gold text-fernet-dark text-xs px-2 py-1 rounded inline-block mt-2">
                   ⚠️ Reportado
                 </span>
               )}
             </div>
             
-            <div className="space-y-3 text-sm">
+            <div className="space-y-3 text-sm text-center">
               <div>
-                <span className="text-fernet-dark opacity-70">📍 Dirección:</span>
+                <div className="font-bold text-lg text-fernet-dark mb-4">
+                  📍 {selectedStore.address}
+                </div>
                 <a
                   href={`https://maps.app.goo.gl/${selectedStore.URI}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block font-bold text-lg text-blue-600 underline hover:text-blue-800 hover:bg-blue-50 rounded-md p-2 -m-2 transition-all duration-200 mt-1"
+                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200"
                 >
-                  {selectedStore.address} 
+                  <img src="/location.svg" alt="Location" className="w-5 h-5" />
+                  Ver en Maps
                 </a>
-              </div>
-              <div>
-                <span className="text-fernet-dark opacity-70 text-base">🕒 Horarios:</span>
-                <p className="font-semibold text-fernet-dark text-lg">{selectedStore.hours}</p>
               </div>
             </div>
           </div>
