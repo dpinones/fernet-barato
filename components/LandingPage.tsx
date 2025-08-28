@@ -37,7 +37,7 @@ export default function LandingPage({ onGetStarted, previewStores, loadingPrevie
                     {/* Call to Action */}
             <div className="space-y-4">  
               <h1 className="text-lg font-semibold mb-4 text-fernet-dark">
-                ¡Encontra el Fernet más barato cerca tuyo! Logueate para ver todos los precios.
+                ¡Encontra el Fernet más barato cerca tuyo! Accede para ver todos los precios.
               </h1>
               <button
                 onClick={onGetStarted}
