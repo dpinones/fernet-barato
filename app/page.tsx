@@ -8,8 +8,8 @@ import LoginForm from "../components/LoginForm";
 import AdminPanel from "../components/AdminPanel";
 import ReportModal from "../components/ReportModal";
 import { userAtom, isAuthenticatedAtom, signInAtom, signOutAtom } from "../lib/auth-atoms";
-import { getAllStoresWithPrices, giveThanks, priceToDisplay, isAdmin } from "../lib/contract";
-import type { SignInResponse, FilterOptions } from "../lib/types";
+import { getAllStores, giveThanks, priceToDisplay, isAdmin, getThanksCount, getReports } from "../lib/contract";
+import type { SignInResponse, FilterOptions, Store, StoreWithPrice } from "../lib/types";
 
 export default function Home() {
   const user = useAtomValue(userAtom);
@@ -244,12 +244,21 @@ export default function Home() {
         accessToken: '' // Empty for read operations
       };
       
-      // Get the same data as the main list
-      const storesData = await getAllStoresWithPrices(contractParams);
+      // Get stores with built-in current_price (optimized - single call)
+      const stores = await getAllStores(contractParams);
+      
+      // Get additional data for each store in parallel
+      const storesData = await Promise.all(
+        stores.map(async (store: Store): Promise<StoreWithPrice> => ({
+          ...store,
+          thanks_count: await getThanksCount(contractParams, store.id),
+          reports: await getReports(contractParams, store.id)
+        }))
+      );
       console.log('Loaded preview stores (same as main list):', storesData);
 
       // Convert to preview format and take the first 2 cheapest
-      const storesWithPriceDisplay = storesData.map(store => {
+      const storesWithPriceDisplay = storesData.map((store: StoreWithPrice) => {
         const priceDisplay = priceToDisplay(store.current_price, store.id);
         return {
           store: {
@@ -293,11 +302,21 @@ export default function Home() {
         accessToken: user.access_token
       };
       
-      const storesData = await getAllStoresWithPrices(contractParams);
+      // Get stores with built-in current_price (optimized - single call)
+      const stores = await getAllStores(contractParams);
+      
+      // Get additional data for each store in parallel
+      const storesData = await Promise.all(
+        stores.map(async (store: Store): Promise<StoreWithPrice> => ({
+          ...store,
+          thanks_count: await getThanksCount(contractParams, store.id),
+          reports: await getReports(contractParams, store.id)
+        }))
+      );
       console.log('Loaded stores from contract:', storesData);
 
       // Convert prices to display format and calculate price differences
-      const storesWithPriceDisplay = storesData.map(store => {
+      const storesWithPriceDisplay = storesData.map((store: StoreWithPrice) => {
         const priceDisplay = priceToDisplay(store.current_price, store.id);
         return {
           ...store,
