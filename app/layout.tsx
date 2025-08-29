@@ -5,10 +5,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Fernet Barato - Los mejores precios de fernet cerca tuyo",
+    default: "Fernet Barato cerca tuyo!",
     template: "%s | Fernet Barato"
   },
-  description: "Encuentra los mejores precios de fernet en Argentina. Compara precios en tiempo real, encuentra las tiendas más cercanas y ahorra dinero en tu fernet favorito.",
+  description: "Encuentra los mejores precios de fernet en Argentina.",
   keywords: [
     "fernet precios",
     "fernet barato", 
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     locale: "es_AR",
     url: "https://fernetbarato.com",
     siteName: "Fernet Barato",
-    title: "Fernet Barato - Los mejores precios de fernet cerca tuyo",
+    title: "Fernet Barato cerca tuyo!",
     description: "Encuentra los mejores precios de fernet en Argentina. Compara precios en tiempo real y ahorra dinero.",
     images: [
       {
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@fernetbarato",
     creator: "@fernetbarato",
-    title: "Fernet Barato - Los mejores precios de fernet cerca tuyo",
+    title: "Fernet Barato cerca tuyo!",
     description: "Encuentra los mejores precios de fernet en Argentina. Compara precios en tiempo real y ahorra dinero.",
     images: ["/twitter-image.jpg"],
   },
