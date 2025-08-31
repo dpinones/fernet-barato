@@ -1,131 +1,159 @@
-# Cavos SDK Example
+# Fernet Barato
 
-A Next.js application demonstrating the integration with Cavos Service SDK for blockchain authentication and transaction execution.
+Una aplicación web descentralizada para comparar precios de fernet en Argentina, construida con Next.js 15 y desplegada en la blockchain Starknet.
 
-## 🚀 Quick Start
+## 📱 Características
 
-**First step: Read the [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md) file to configure your environment variables before running the application.**
+- **Comparación de Precios**: Encuentra los mejores precios de fernet en tu zona
+- **Sistema de Agradecimientos**: Los usuarios pueden agradecer a las tiendas por mantener buenos precios
+- **Panel de Administración**: Gestiona tiendas y actualiza precios
+- **Integración Blockchain**: Autenticación y transacciones seguras vía Starknet
 
-## 🏗️ Project Structure
+## 🚀 Demo en Vivo
 
-This is a consolidated Next.js application with integrated API routes:
+La aplicación está disponible en: [Fernet Barato](https://fernet-barato.vercel.app)
+
+## 🛠️ Stack Tecnológico
+
+- **Frontend**: Next.js 15 con React 19
+- **Styling**: Tailwind CSS 4
+- **Blockchain**: Starknet + Cairo smart contracts
+- **Autenticación**: Cavos Service SDK
+- **Deployment**: Vercel
+
+## 🏗️ Estructura del Proyecto
 
 ```
 /
 ├── app/
 │   ├── api/v1/                    # API endpoints
-│   │   ├── auth/
-│   │   │   ├── signIn/route.ts    # User authentication
-│   │   │   └── signUp/route.ts    # User registration
-│   │   └── execute/route.ts       # Transaction execution
-│   ├── page.tsx                   # Main application page
-│   └── layout.tsx                 # Application layout
-├── lib/                           # Utility functions and types
-├── public/                        # Static assets
-└── .env.local                     # Environment variables
+│   │   ├── auth/                  # Autenticación
+│   │   └── execute/               # Ejecución de transacciones
+│   ├── page.tsx                   # Página principal
+│   └── layout.tsx                 # Layout de la aplicación
+├── components/                    # Componentes React
+│   ├── AdminPanel.tsx            # Panel de administración
+│   ├── LoginForm.tsx             # Formulario de login
+│   └── ReportModal.tsx           # Modal de reportes
+├── contracts/                     # Smart contracts Cairo
+│   ├── src/lib.cairo             # Contrato principal FernetBarato
+│   └── Scarb.toml                # Configuración Scarb
+├── lib/                          # Utilidades y configuración
+│   ├── contract.ts               # Integración con Starknet
+│   ├── contract-config.ts        # ABI y configuración
+│   ├── auth-atoms.ts             # Estados de autenticación
+│   └── types.ts                  # Definiciones TypeScript
+└── .env.local                    # Variables de entorno
 ```
 
-## 📡 API Endpoints
+## 🚀 Configuración Rápida
 
-### Authentication
+### 1. Clonar el repositorio
 
-#### POST `/api/v1/auth/signUp`
+```bash
+git clone https://github.com/dpinoness/fernet-barato.git
+cd fernet-barato
+```
 
-Register a new user account.
+### 2. Instalar dependencias
 
-**Request Body:**
+```bash
+npm install
+```
 
-```json
-{
-  "email": "user@example.com",
-  "password": "securepassword123",
-  "network": "sepolia"
+### 3. Configurar variables de entorno
+
+Crea un archivo `.env` con las siguientes variables:
+
+```env
+# Cavos Configuration
+CAVOS_ORG_SECRET=your_org_secret
+CAVOS_APP_ID=your_app_id
+NEXT_PUBLIC_CAVOS_APP_ID=your_app_id
+
+# Network Configuration
+NEXT_PUBLIC_STARKNET_NETWORK=sepolia
+```
+
+**📖 Obtener credenciales**: Lee [ENVIRONMENT_SETUP.md](./ENVIRONMENT_SETUP.md) para instrucciones detalladas.
+
+### 4. Ejecutar en desarrollo
+
+```bash
+npm run dev
+```
+
+La aplicación estará disponible en `http://localhost:3000`
+
+## 🔗 Smart Contract
+
+### Información del Contrato
+
+- **Dirección**: `0x074be431870d9cc608ed79dd2d6dcf672a5da328ed89b25f4f698434a91638f8`
+- **Red**: Starknet Mainnet
+- **Lenguaje**: Cairo
+
+### Funciones Principales
+
+#### Funciones de Lectura (View)
+- `get_all_stores()` - Obtiene todas las tiendas
+- `get_current_price(store_id)` - Precio actual de una tienda
+- `get_all_current_prices()` - Todos los precios actuales
+- `get_reports(store_id)` - Reportes de una tienda
+- `get_thanks_count(store_id)` - Contador de agradecimientos
+- `has_user_thanked(store_id, user)` - Verifica si el usuario ya agradeció
+
+#### Funciones de Escritura (External)
+- `add_store()` - Agregar nueva tienda
+- `update_price()` - Actualizar precio
+- `give_thanks()` - Agradecer a una tienda
+- `submit_report()` - Enviar reporte
+
+### Estructura de Datos
+
+```cairo
+struct Store {
+    id: felt252,
+    name: ByteArray,
+    address: ByteArray,
+    phone: ByteArray,
+    hours: ByteArray,
+    URI: ByteArray
+}
+
+struct Price {
+    price: u256,
+    timestamp: u64      // Timestamp Unix
+}
+
+struct Report {
+    store_id: felt252,
+    description: ByteArray,
+    submitted_at: u64,
+    submitted_by: ContractAddress
 }
 ```
 
-**Response:**
+## 🧪 Desarrollo de Smart Contracts
 
-```json
-{
-  "success": true,
-  "message": "User registered successfully",
-  "data": {
-    "email": "user@example.com",
-    "wallet_address": "0x...",
-    "created_at": "2024-01-01T00:00:00Z"
-  }
-}
+### Compilar contratos
+
+```bash
+scarb build
 ```
 
-#### POST `/api/v1/auth/signIn`
+### Ejecutar tests
 
-Authenticate an existing user.
-
-**Request Body:**
-
-```json
-{
-  "email": "user@example.com",
-  "password": "securepassword123",
-  "network": "sepolia"
-}
+```bash
+scarb test
+# o
+snforge test
 ```
 
-**Response:**
+## Recursos
 
-```json
-{
-  "success": true,
-  "message": "Login successful",
-  "access_token": "eyJ...",
-  "wallet_address": "0x...",
-  "email": "user@example.com"
-}
-```
+Para problemas relacionados con:
 
-### Transaction Execution
-
-#### POST `/api/v1/execute`
-
-Execute smart contract calls through Cavos.
-
-**Request Body:**
-
-```json
-{
-  "walletAddress": "0x...",
-  "network": "sepolia",
-  "accessToken": "eyJ...",
-  "calls": [
-    {
-      "contractAddress": "0x...",
-      "entrypoint": "transfer",
-      "calldata": ["0x...", "1000000"]
-    }
-  ]
-}
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "message": "Transaction executed successfully",
-  "data": {
-    "txHash": "0x...",
-    "accessToken": "eyJ..." // Refreshed token
-  }
-}
-```
-
-### Network Support
-
-- **Sepolia**: Ethereum testnet (recommended for development)
-- **Mainnet**: Ethereum mainnet (for production)
-
-## 🆘 Support
-
-For issues related to:
-
-- **Cavos SDK**: Check the [Cavos documentation](https://docs.cavos.com)
+- **Cavos SDK**: Consulta la [documentación de Cavos](https://docs.cavos.com)
+- **Starknet**: Visita [Starknet Docs](https://docs.starknet.io)
+- **Smart Contracts**: Revisa [Cairo Book](https://book.cairo-lang.org)
